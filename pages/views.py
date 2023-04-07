@@ -36,3 +36,5 @@ class LoginPage(TemplateView):
 class Dashboard(TemplateView):
     template_name = 'teacherDashboard.html'
 
+class StudentDashboard(TemplateView):
+    template_name = 'studentDashboard.html'

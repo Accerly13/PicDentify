@@ -1,425 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Teacher Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Program</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-HBcVEZp2mZq5Fc+1QjtwPgHzVJgkdTJA0JCBDDvPXdUnZjzc4KPQJw520KVUhY+" crossorigin="anonymous">
+    <style>
+        /* Add your custom styles here */
+		
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .form-container {
+            margin-top: 50px;
+            max-width: 600px;
+            margin: auto;
+            background-color: #f4f4f4;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-container p {
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        .form-container label {
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+        
+        .form-container input[type="text"],
+        .form-container input[type="file"],
+        .form-container select,
+        .form-container input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-container button[type="submit"] {
+            display: block;
+            margin: auto;
+            width: 100%;
+            max-width: 200px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            cursor: pointer;
+        }
+        
+        .form-container button[type="submit"]:hover {
+            background-color: #0069d9;
+        }
+        
+        .form-container .form-group-icon {
+            position: relative;
+        }
+        
+        .form-container .form-group-icon input {
+            padding-left: 40px;
+        }
+        
+        .form-container .form-group-icon .icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+            font-size: 20px;
+        }
+		
+		.navbar-brand {
+    font-size: 2rem;
+  }
+  .logo-img {
+    max-height: 50px;
+  }
+  .nav-link {
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #212529;
+  }
+  .nav-link:hover {
+    color: #007bff;
+  }
+  .dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    border-radius: 0.5rem;
+  }
+  .dropdown-item {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    color: #212529;
+  }
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+  }
+    </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>LOGO</h2>
-    <ul>
-      <li><a href="#">Dashboard</a></li>
-      <li><a href="#">Activity History</a></li>
-      <li><a href="#">Students</a></li>
-      <li><a href="#">Logout</a></li>
-    </ul>
+    <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="logo.png" alt="PICDENTIFY" class="logo-img">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            History
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Game 1</a>
+            <a class="dropdown-item" href="#">Game 2</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Clear History</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Students</a>
+        </li>
+      </ul>
+    </div>
   </div>
+</nav>
 
-  <div class="container">
-    <h1>Add Picture and Words</h1>
-    <form>
-	<div class="form-group">
-	  <label for="picture" class="file-label">
-		<span>Upload Picture</span>
-		<input type="file" id="picture" name="picture">
-	  </label>
-	  <img id="preview" src="#" alt="Preview Image" style="display: none;">
-	</div>
+<!-- Main Content -->
+    <div class="container">
+	<h1 class="mt-3" style="text-align:center">Create a New Game</h1>
+        <div class="row">
+			
+            <div class="col-md-6 mx-auto">
+                <div class="form-container">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="form-group form-group-icon">
+                            <label for="word1"><i class="fas fa-pencil-alt icon"></i>Word 1:</label>
+                            <input type="text" class="form-control" id="word1" name="word1">
+                        </div>
+                        <div class="form-group form-group-icon">
+                            <label for="word2"><i class="fas fa-pencil-alt icon"></i>Word 2:</label>
+                            <input type="text" class="form-control" id="word2" name="word2">
+                        </div>
+                        <div class="form-group form-group-icon">
+                            <label for="word3"><i class="fas fa-pencil-alt icon"></i>Word 3:</label>
+                            <input type="text" class="form-control" id="word3" name="word3">
+                        </div>
+                        <div class="form-group form-group-icon">
+                            <label for="word4"><i class="fas fa-pencil-alt icon"></i>Word 4:</label>
+                            <input type="text" class="form-control" id="word4" name="word4">
+                        </div>
+                    </form>
+                </div>
+            </div>
+			
+			<div class="col-md-6 mx-auto">
+                <div class="form-container">
 
-      <div class="form-group">
-        <label for="word1">Word 1:</label>
-        <input type="text" id="word1" name="word1" value="">
-      </div>
-      <div class="form-group">
-        <label for="word2">Word 2:</label>
-        <input type="text" id="word2" name="word2" value="">
-      </div>
-      <div class="form-group">
-        <label for="word3">Word 3:</label>
-        <input type="text" id="word3" name="word3" value="">
-      </div>
-      <div class="form-group">
-        <label for="word4">Word 4:</label>
-        <input type="text" id="word4" name="word4" value="">
-      </div>
-	  
-	  	<div>
-	   <fieldset>
-        <legend>Game Settings</legend>
-        <div class="form-group">
-          <label for="level">Difficulty Level:</label>
-          <select id="level" name="level">
-            <option value="easy">Easy</option>
-            <option value="average">Average</option>
-            <option value="difficult">Difficult</option>
-          </select>
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        <div class="form-group form-group-icon">
+                            <label for="image"><i class="fas fa-image icon"></i>Image:</label>
+                            <input type="file" class="form-control" id="image" name="image">
+                        </div>
+                        <div class="form-group form-group-icon">
+                            <label for="difficulty"><i class="fas fa-star icon"></i>Difficulty Level:</label>
+                            <select class="form-control" id="difficulty" name="difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+						
+						<div class="form-group form-group-icon">
+                            <label for="topic"><i class="fas fa-star icon"></i>Choose a Topic:</label>
+                            <select class="form-control" id="topic" name="topic">
+                                <option value="synonyms">Synonyms</option>
+                                <option value="antonyms">Antonyms</option>
+								<option value="homonyms">Homonyms</option>
+								<option value="hyponyms">Hyponyms</option>
+								<option value="homographs">Homographs</option>
+                            </select>
+                        </div>
+                        <div class="form-group form-group-icon">
+                            <label for="time_limit"><i class="far fa-clock icon"></i>Time Limit (in minutes):</label>
+                            <input type="number" class="form-control" id="time_limit" name="time_limit" min="1" max="60">
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-          <label for="time_limit">Time Limit:</label>
-          <input type="number" id="time_limit" name="time_limit" min="1" max="10" value="3">
-          <span>minutes</span>
-        </div>
-      </fieldset>
-	</div>
-	
-      <button type="submit" class="btn" id="add-words-btn">Add Picture and Words</button>
-    </form>
-  </div>
+		<div style="text-align:center">
+			<button type="submit" class="btn btn-primary mt-2">Create Game</button>
+		</div>
+    </div>
 
-  <script src="script.js"></script>
-  
-  <script>
-	const input = document.querySelector('#picture');
-	const preview = document.querySelector('#preview');
+    <!-- Footer -->
+    <footer>
+        <!-- Add your footer content here -->
+    </footer>
 
-	input.addEventListener('change', () => {
-	  const file = input.files[0];
-
-	  if (file) {
-		const reader = new FileReader();
-
-		reader.addEventListener('load', () => {
-		  preview.setAttribute('src', reader.result);
-		  preview.style.display = 'block';
-		});
-
-		reader.readAsDataURL(file);
-	  }
-	});
-	
-
-  </script>
+    <!-- JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        /* Add your custom JavaScript here */
+    </script>
 </body>
 </html>
-
-<style>
-
-img {
-  max-width: 400px;
-  max-height: 400px;
-}
-
-
-.file-label {
-  display: inline-block;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.file-label:hover {
-  background-color: #2E8B57;
-}
-
-.file-label input[type="file"] {
-  display: none;
-}
-
-/* Optional: hide the label when the image is shown */
-#preview:not([src="#"]) + .file-label {
-  display: none;
-}
-
-
-#add-words-btn {
-  /* other button styles */
-  display: inline-block;
-}
-
-#preview {
-  display: block;
-  margin: 0 auto;
-    display: none;
-}
-
-#upload-btn {
-  display: block;
-}
-
-/* Sidebar styling */
-
-.sidebar {
-  background-color: #f5f5f5;
-  height: 100%;
-  position: fixed;
-  width: 200px;
-  padding: 20px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar h2 {
-  margin-top: 0;
-  font-size: 24px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ccc;
-}
-
-.sidebar ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.sidebar li {
-  margin-bottom: 10px;
-}
-
-.sidebar li:last-child {
-  margin-top: auto;
-}
-
-.sidebar li a {
-  display: block;
-  padding: 10px;
-  font-size: 16px;
-  text-decoration: none;
-  color: #666;
-  transition: background-color 0.3s ease;
-}
-
-.sidebar li a:hover {
-  background-color: #eee;
-  color: #333;
-}
-
-.sidebar li.logout {
-  margin-top: auto;
-  text-align: center;
-}
-
-.sidebar li.logout a {
-  background-color: #c0392b;
-  color: #fff;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 10px 20px;
-  text-align: center;
-  transition: background-color 0.3s ease;
-}
-
-.sidebar li.logout a:hover {
-  background-color: #e74c3c;
-}
-
-/* Container styling */
-.container {
-  margin-left: 250px;
-  padding: 30px;
-  text-align: center;
-}
-
-.container h1 {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-label {
-  width: 100px;
-  margin-right: 20px;
-  font-weight: bold;
-}
-
-input[type="text"] {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  background-color: transparent;
-}
-
-
-.form-group label {
-  display: block;
-  font-size: 18px;
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-
-.form-group input[type="text"],
-.form-group input[type="file"] {
-  border: none;
-  background-color: transparent;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 10px;
-  padding: 5px;
-  font-size: 16px;
-}
-
-.form-group input[type="file"] {
-  padding: 10px;
-}
-
-.form-group button[type="submit"] {
-  background-color: #ffcc00;
-  color: #333;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.form-group button[type="submit"]:hover {
-  background-color: #ffe066;
-}
-
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
-}
-
-/* Button styling */
-.btn {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn:hover {
-  background-color: #3e8e41;
-}
-
-/* Gamification styling */
-.sidebar li:last-child {
-  display: flex;
-  align-items: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.sidebar li:last-child span {
-  font-size: 24px;
-  margin-left: 5px;
-}
-
-.points-earned {
-  position: absolute;
-  background-color: #4CAF50;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
-}
-
-.points-lost {
-  position: absolute;
-  background-color: #f44336;
-  color: #fff;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 999;
-}
-
-/* Animation */
-@keyframes points-animation {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.2);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0;
-  }
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.btn-file {
-  background-color: #4CAF50;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-file:hover {
-  background-color: #3e8e41;
-}
-
-.btn-file:active {
-  transform: translateY(2px);
-}
-
-.file-selected {
-  display: inline-block;
-  margin-left: 10px;
-  font-weight: bold;
-}
-
-.file-selected:before {
-  content: "(";
-}
-
-.file-selected:after {
-  content: ")";
-}
-
-fieldset {
-  border: 2px solid #ffcc00;
-  border-radius: 10px;
-  margin-bottom: 3em;
-  padding: 3em;
-  background-color: #fffef3;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-fieldset {
-  border: none;
-  margin: 0;
-  padding: 0;
-}
-
-legend {
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 1em;
-  text-shadow: 1px 1px #fff;
-}
-
-</style>
