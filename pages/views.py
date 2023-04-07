@@ -29,3 +29,10 @@ class HomeView(TemplateView):
         
         # Render the search form if the request method is not POST
         return render(request, 'home.html')
+class LoginPage(TemplateView):
+    template_name = 'loginPage.html'
+
+
+class Dashboard(TemplateView):
+    template_name = 'teacherDashboard.html'
+
