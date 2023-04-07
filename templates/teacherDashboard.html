@@ -27,7 +27,6 @@
 	  <img id="preview" src="#" alt="Preview Image" style="display: none;">
 	</div>
 
-
       <div class="form-group">
         <label for="word1">Word 1:</label>
         <input type="text" id="word1" name="word1" value="">
@@ -44,6 +43,26 @@
         <label for="word4">Word 4:</label>
         <input type="text" id="word4" name="word4" value="">
       </div>
+	  
+	  	<div>
+	   <fieldset>
+        <legend>Game Settings</legend>
+        <div class="form-group">
+          <label for="level">Difficulty Level:</label>
+          <select id="level" name="level">
+            <option value="easy">Easy</option>
+            <option value="average">Average</option>
+            <option value="difficult">Difficult</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="time_limit">Time Limit:</label>
+          <input type="number" id="time_limit" name="time_limit" min="1" max="10" value="3">
+          <span>minutes</span>
+        </div>
+      </fieldset>
+	</div>
+	
       <button type="submit" class="btn" id="add-words-btn">Add Picture and Words</button>
     </form>
   </div>
@@ -378,6 +397,29 @@ input[type="file"] {
 
 .file-selected:after {
   content: ")";
+}
+
+fieldset {
+  border: 2px solid #ffcc00;
+  border-radius: 10px;
+  margin-bottom: 3em;
+  padding: 3em;
+  background-color: #fffef3;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1em;
+  text-shadow: 1px 1px #fff;
 }
 
 </style>
