@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>LOGO</h2>
+    <ul>
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Activity History</a></li>
+      <li><a href="#">Students</a></li>
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="container">
+    <h1>Add Picture and Words</h1>
+    <form>
+	<div class="form-group">
+	  <label for="picture" class="file-label">
+		<span>Upload Picture</span>
+		<input type="file" id="picture" name="picture">
+	  </label>
+	  <img id="preview" src="#" alt="Preview Image" style="display: none;">
+	</div>
+
+
+      <div class="form-group">
+        <label for="word1">Word 1:</label>
+        <input type="text" id="word1" name="word1" value="">
+      </div>
+      <div class="form-group">
+        <label for="word2">Word 2:</label>
+        <input type="text" id="word2" name="word2" value="">
+      </div>
+      <div class="form-group">
+        <label for="word3">Word 3:</label>
+        <input type="text" id="word3" name="word3" value="">
+      </div>
+      <div class="form-group">
+        <label for="word4">Word 4:</label>
+        <input type="text" id="word4" name="word4" value="">
+      </div>
+      <button type="submit" class="btn" id="add-words-btn">Add Picture and Words</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+  
+  <script>
+	const input = document.querySelector('#picture');
+	const preview = document.querySelector('#preview');
+
+	input.addEventListener('change', () => {
+	  const file = input.files[0];
+
+	  if (file) {
+		const reader = new FileReader();
+
+		reader.addEventListener('load', () => {
+		  preview.setAttribute('src', reader.result);
+		  preview.style.display = 'block';
+		});
+
+		reader.readAsDataURL(file);
+	  }
+	});
+	
+
+  </script>
+</body>
+</html>
+
+<style>
+
+img {
+  max-width: 400px;
+  max-height: 400px;
+}
+
+
+.file-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.file-label:hover {
+  background-color: #2E8B57;
+}
+
+.file-label input[type="file"] {
+  display: none;
+}
+
+/* Optional: hide the label when the image is shown */
+#preview:not([src="#"]) + .file-label {
+  display: none;
+}
+
+
+#add-words-btn {
+  /* other button styles */
+  display: inline-block;
+}
+
+#preview {
+  display: block;
+  margin: 0 auto;
+    display: none;
+}
+
+#upload-btn {
+  display: block;
+}
+
+/* Sidebar styling */
+
+.sidebar {
+  background-color: #f5f5f5;
+  height: 100%;
+  position: fixed;
+  width: 200px;
+  padding: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  font-size: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar li:last-child {
+  margin-top: auto;
+}
+
+.sidebar li a {
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+  text-decoration: none;
+  color: #666;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar li a:hover {
+  background-color: #eee;
+  color: #333;
+}
+
+.sidebar li.logout {
+  margin-top: auto;
+  text-align: center;
+}
+
+.sidebar li.logout a {
+  background-color: #c0392b;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 10px 20px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar li.logout a:hover {
+  background-color: #e74c3c;
+}
+
+/* Container styling */
+.container {
+  margin-left: 250px;
+  padding: 30px;
+  text-align: center;
+}
+
+.container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+label {
+  width: 100px;
+  margin-right: 20px;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background-color: transparent;
+}
+
+
+.form-group label {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  border: none;
+  background-color: transparent;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 10px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.form-group input[type="file"] {
+  padding: 10px;
+}
+
+.form-group button[type="submit"] {
+  background-color: #ffcc00;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.form-group button[type="submit"]:hover {
+  background-color: #ffe066;
+}
+
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+/* Button styling */
+.btn {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #3e8e41;
+}
+
+/* Gamification styling */
+.sidebar li:last-child {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.sidebar li:last-child span {
+  font-size: 24px;
+  margin-left: 5px;
+}
+
+.points-earned {
+  position: absolute;
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+.points-lost {
+  position: absolute;
+  background-color: #f44336;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+/* Animation */
+@keyframes points-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.btn-file {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-file:hover {
+  background-color: #3e8e41;
+}
+
+.btn-file:active {
+  transform: translateY(2px);
+}
+
+.file-selected {
+  display: inline-block;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.file-selected:before {
+  content: "(";
+}
+
+.file-selected:after {
+  content: ")";
+}
+
+</style>
