@@ -36,12 +36,20 @@
 			</select>
 			{% else %}
 				<div>
+					<input type="text" hidden name="new_user_hidden" value="new">
 					<label for="new_user">Type Your Name:</label>
 					<input type="text" id="new_user" name="new_user" required>
 					<label for="new_user">Password:</label>
 					<input type="text" id="password" name="password" required>
 					<label for="new_user">Type Your Password Again:</label>
 					<input type="text" id="password1" name="password1" required>
+					{% if messages %}
+					<p class="messages">
+						{% for message in messages %}
+						<p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
+						{% endfor %}
+					</p>
+					{% endif %}
 				</div> 
 			{% endif %}
 			</form>
@@ -214,11 +222,7 @@ input[type="submit"]:hover {
 		fetch('', {
 			method: 'POST',
 			body: formData
-		}).then(response => response.json())
-		.then(data => {
-			var jsResponse = data.adminKeyVerify;
-			checkResponse(jsResponse)
-		});
+		})
 	}
 	function checkResponse(response) {
 		const errorMessage = new Error("Incorrect Admin Key!");

@@ -1,10 +1,23 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import AdminUser, AdminKey
+from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout, authenticate, login
 import random
 import string
 from google_images_search import GoogleImagesSearch
+
+@login_required
+def protected_view(request):
+    # Your protected view logic here
+    return render(request, 'loginPage.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
 # Create your views here.
 class TryView(TemplateView):
     template_name = 'try.html'
@@ -44,7 +57,12 @@ class LoginPage(TemplateView):
     def post(self, request):
         def generate_random_string():
             characters = string.ascii_letters + string.digits
-            return ''.join(random.choice(characters) for i in range(8))
+            teacher_key = ''.join(random.choice(characters) for i in range(8))
+            try:
+                if AdminUser.objects.get(user_key=teacher_key):
+                    generate_random_string()
+            except:
+                return teacher_key
 
         if request.POST.get('admin_key'):
             admin_key_input = request.POST['admin_key']
@@ -55,14 +73,24 @@ class LoginPage(TemplateView):
 
             else:
                return JsonResponse({'adminKeyVerify': False})
-        else:
-            print("hey")
-            return JsonResponse({'adminKeyVerify': False})
+        elif request.POST.get('new_user_hidden'):
+            teacher_key = generate_random_string()
+
+            if request.POST['password'] == request.POST['password1']:
+                admins = AdminUser.objects.all()
+
+                AdminUser.objects.create_superuser(admin_id=admins.count(), username=request.POST['new_user'], 
+                                                   password=request.POST['password'], user_key=teacher_key)
+                user = authenticate(request, username=request.POST['new_user'], user_key=teacher_key, password=request.POST['password'])
+                if user is not None:
+                    login(request, user)
+                    return redirect('dashboard/')
+            else:
+                messages.success(request, ("Invalid Username or Password!"))	
+                return redirect('/')	
         
-
-
-class Dashboard(TemplateView):
+class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'teacherDashboard.html'
 
-class StudentDashboard(TemplateView):
+class StudentDashboard(LoginRequiredMixin, TemplateView):
     template_name = 'studentDashboard.html'
