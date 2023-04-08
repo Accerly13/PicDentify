@@ -26,7 +26,8 @@ class MyUserManager(BaseUserManager):
 
 class AdminUser(AbstractBaseUser, PermissionsMixin):
     admin_id = models.PositiveIntegerField(primary_key=True)
-    username = models.CharField(max_length=30, unique=True)
+    username = models.CharField(max_length=30)
+    user_key = models.CharField(max_length=30, unique=True)
 
     objects = MyUserManager()
 
@@ -41,4 +42,22 @@ class AdminKey(models.Model):
 
     class Meta:
         db_table = "admin_key"
+
+class Topics(models.Model):
+    topic_id = models.AutoField(primary_key=True, unique=True)
+    topic_name = models.CharField(max_length=100, verbose_name='topic_name')
+    owner = models.ForeignKey(AdminUser, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "topics"
+    
+class Difficulty(models.Model):
+    difficulty_id = models.AutoField(primary_key=True, unique=True)
+    difficulty_name = models.CharField(max_length=20, verbose_name='difficulty')
+    words = models.JSONField()
+    topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    class Meta:
+        db_table = "difficulty"
+
+
     

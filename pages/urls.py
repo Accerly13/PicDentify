@@ -10,5 +10,5 @@ urlpatterns = [
     path('', views.LoginPage.as_view(), name='login'),
     path('dashboard/', views.Dashboard.as_view(), name='dashboard'),
     path('studentdashboard/', views.StudentDashboard.as_view(), name='studentdashboard'),
-    path('try/', views.HomeView.as_view(), name='try'),
+    path('try/', views.TryView.as_view(), name='try'),
 ]
