@@ -12,16 +12,16 @@ now = timezone.now()
 
 
 class MyUserManager(BaseUserManager):
-    def create_user(self, admin_id, username, password=None, **extra_fields):
+    def create_user(self, admin_id, username, user_key, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', False)
-        user = self.model(admin_id=admin_id, username=username, **extra_fields)
+        user = self.model(admin_id=admin_id, username=username, user_key=user_key, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, admin_id, username, password, **extra_fields):
+    def create_superuser(self, admin_id, username, user_key, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(admin_id, username, password=password, **extra_fields)
+        return self.create_user(admin_id, username, user_key, password=password, **extra_fields)
     
 
 class AdminUser(AbstractBaseUser, PermissionsMixin):
