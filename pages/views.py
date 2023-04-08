@@ -66,3 +66,6 @@ class Dashboard(TemplateView):
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
+
+class StudentActivity(TemplateView):
+    template_name = 'studentActivity.html'
