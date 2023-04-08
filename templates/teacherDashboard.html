@@ -10,9 +10,13 @@
         /* Add your custom styles here */
 		
         body {
-            font-family: Arial, sans-serif;
-        }
-        
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+}    
         .form-container {
             margin-top: 50px;
             max-width: 600px;
@@ -145,7 +149,7 @@
           font-size: 1.2rem;
           text-transform: uppercase;
           letter-spacing: 1px;
-          color: #212529;
+          color: #fff;
         }
         .nav-link:hover {
           color: #007bff;
@@ -163,13 +167,49 @@
         .dropdown-item:hover {
           background-color: #f8f9fa;
         }
+
+/* Footer styles */
+
+footer {
+  background-color: #333;
+  color: #fff;
+  padding: 2rem;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.footer-column {
+  flex: 0 0 100%;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.footer-column p {
+  font-size: 1.2rem;
+  margin-bottom: 0;
+}
+
+.footer-column a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  text-decoration: underline;
+}
+
+
     </style>
 </head>
 <body>
     <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+<nav  class="navbar navbar-expand-lg navbar-light bg-light">
+  <div style="background-color: #333;" class="container-fluid">
+    <a style="color: #fff;" class="navbar-brand" href="#">
       <img src="logo.png" alt="PICDENTIFY" class="logo-img">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -178,10 +218,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home</a>
+          <a style="color: #fff;" class="nav-link" href="#">Home</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             History
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -192,7 +232,7 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Students</a>
+          <a style="color: #fff;" class="nav-link" href="#">Students</a>
         </li>
       </ul>
     </div>
@@ -203,7 +243,7 @@
     <div class="container">
         <div class="row">
 			
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-6 mx-auto mb-2">
               <div class="form-container">
                 <form action="" method="POST" enctype="multipart/form-data">
                   <div class="form-group form-group-icon">
@@ -285,8 +325,18 @@
 
     <!-- Footer -->
     <footer>
-        <!-- Add your footer content here -->
+      <div class="container">
+        <div class="footer-row">
+          <div class="footer-column">
+            <p>&copy; 2023 Your School Name. All rights reserved.</p>
+          </div>
+          <div class="footer-column">
+            <p>Customer Service: <a href="tel:1234567890">123-456-7890</a> | <a href="mailto:customerservice@yourschool.com">customerservice@yourschool.com</a></p>
+          </div>
+        </div>
+      </div>
     </footer>
+    
 
     <!-- JavaScript -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
