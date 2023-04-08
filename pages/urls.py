@@ -11,5 +11,6 @@ urlpatterns = [
     path('dashboard/', views.Dashboard.as_view(), name='dashboard'),
     path('dashboard', views.Dashboard.as_view(), name='dashboard'),
     path('studentdashboard/', views.StudentDashboard.as_view(), name='studentdashboard'),
+    path('studentdashboard/studentactivity/', views.StudentActivity.as_view(), name='studentactivity'),
     path('try/', views.TryView.as_view(), name='try'),
 ]
