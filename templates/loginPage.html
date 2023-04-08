@@ -8,12 +8,36 @@
 <body>
 	<div class="container">
 		<h1>Welcome to the Teacher's Lounge!</h1>
-		<div style="display: inline-block;">
-			<label for="username">Username:</label>
-			<input type="text" id="username" name="username" required>
-			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" required>
-			<input type="submit" value="LOGIN">
+		<form id="admin_key_submit"> 
+			{% csrf_token %}
+			<div style="display: inline-block;">
+				<label for="admin_key">Admin Key:</label>
+				<input type="text" id="admin_key" name="admin_key" required>
+				<button class="btn btn-primary" onclick="SubmitAdminKey()" value="LOGIN"> </button>
+			</div>
+		</form>
+	<div id="myModal" class="modal">
+		<!-- Modal content -->
+		<div class="modal-content">
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<button id="close-modal" type="button" class="btn-close" aria-label="Close"></button>
+			</div>
+			{% if admins %}
+			<select class="form-select" aria-label="Default select example" name="courses" onchange="handleSelectChange(this)"> 
+				{% for item in admins %}
+				<option value="{{item.username}}"> {{ item.user_name }} </option>
+				{% endfor %}
+				<option value="add-new-course">Add New </option>
+			</select>
+			{% else %}
+				<div>
+				<input class="form-control" type="text" id="course" name="courses" required>
+				</div> 
+			{% endif %}
+			<button class="btn btn-primary" id="close-modal" onclick="noButton()">No</button>
+			</div>
+		</div>
+	
 		</div>
 	</div>
 </body>
@@ -28,6 +52,13 @@ body {
 	margin: 0;
 	padding: 0;
 }
+
+.confirm-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  }
 
 .container {
 	background-color: rgba(0, 0, 0, 0.7);
@@ -96,4 +127,78 @@ input[type="submit"]:hover {
 		margin: 0 auto;
 	}
 }
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  backdrop-filter: blur(2px);
+  }
+
+  /* Modal Content */
+  .modal-content {
+	background-color: #fefefe;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #888;
+	width: 40%; /* Could be more or less, depending on screen size */
+  }
+
 </style>
+
+<script>
+	 var closeModalBtn = document.getElementById("close-modal");
+		closeModalBtn.addEventListener("click", function() {
+		var modalContainer = document.querySelector(".modal");
+		modalContainer.style.display = "none";
+	});
+	var modal = document.getElementById("myModal");
+	
+	// When the user clicks anywhere outside of the modal, close it
+	function noButton() {
+		modal.style.display = "none";
+		event.preventDefault()
+	}
+
+	const adminKeyInput = document.getElementById('admin_key');
+	adminKeyInput.addEventListener('keydown', function(event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			var myForm = document.querySelector('#admin_key_submit');
+			var formData = new FormData(myForm);
+			fetch('', {
+				method: 'POST',
+				body: formData
+			}).then(response => response.json())
+			.then(data => {
+				var jsResponse = data.adminKeyVerify;
+				if (jsResponse) {
+					modal.style.display = "block";
+				}
+			});
+		}
+	});
+
+	function SubmitAdminKey() {
+		event.preventDefault();
+		var myForm = document.querySelector('#admin_key_submit');
+		var formData = new FormData(myForm);
+		fetch('', {
+			method: 'POST',
+			body: formData
+		}).then(response => response.json())
+		.then(data => {
+			var jsResponse = data.adminKeyVerify;
+			if (jsResponse) {
+				modal.style.display = "block";
+			}
+		});
+	}
+
+</script>

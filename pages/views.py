@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from .models import AdminUser, AdminKey
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from google_images_search import GoogleImagesSearch
 # Create your views here.
 class HomeView(TemplateView):
     template_name = 'home.html'
 
+
     def post(self, request):
-        print(request)
         if request.POST.get('search_term'):
             # Get the search term from the POST request
             search_term = request.POST.get('search_term', '')
@@ -31,7 +33,27 @@ class HomeView(TemplateView):
         return render(request, 'home.html')
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
+    def get(self, request):
+        try:
+            AdminKey.objects.get(pk=1)
+        except:
+            AdminKey.objects.create(key_id=1, admin_key="deped143")
+        
+        admins = AdminUser.objects.all()
+        return render(request, 'loginPage.html', {'admins': admins})
+    
+    def post(self, request):
+        if request.POST.get('admin_key'):
+            admin_key_input = request.POST['admin_key']
+            check_admin_key = AdminKey.objects.get(pk=1)
 
+            if admin_key_input == check_admin_key.admin_key:
+                print(admin_key_input)
+                return JsonResponse({'adminKeyVerify': True})
+
+            else:
+               return JsonResponse({'adminKeyVerify': False})
+        return JsonResponse({'adminKeyVerify': False})
 
 class Dashboard(TemplateView):
     template_name = 'teacherDashboard.html'
