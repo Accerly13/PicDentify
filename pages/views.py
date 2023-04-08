@@ -95,7 +95,7 @@ class LoginPage(TemplateView):
             user = authenticate(request, username=admin.username, user_key=request.POST['new_user'], password=admin.password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard/')
+                return render(request, 'teacherDashboard.html')
             
 class Dashboard(TemplateView):
     template_name = 'teacherDashboard.html'
