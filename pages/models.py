@@ -31,7 +31,7 @@ class AdminUser(AbstractBaseUser, PermissionsMixin):
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'username'
+    USERNAME_FIELD = 'user_key'
 
     class Meta:
         db_table = 'admin'

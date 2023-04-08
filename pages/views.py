@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from .models import AdminUser, AdminKey
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
 import random
 import string
 from google_images_search import GoogleImagesSearch
@@ -56,7 +55,11 @@ class LoginPage(TemplateView):
 
             else:
                return JsonResponse({'adminKeyVerify': False})
-        return JsonResponse({'adminKeyVerify': False})
+        else:
+            print("hey")
+            return JsonResponse({'adminKeyVerify': False})
+        
+
 
 class Dashboard(TemplateView):
     template_name = 'teacherDashboard.html'

@@ -4,6 +4,7 @@
 	<title>Teacher Login Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
+
 </head>
 <body>
 	<div class="container">
@@ -13,8 +14,10 @@
 			<div style="display: inline-block;">
 				<label for="admin_key">Admin Key:</label>
 				<input type="text" id="admin_key" name="admin_key" required>
-				<button class="btn btn-primary" onclick="SubmitAdminKey()" value="LOGIN"> </button>
+				<input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
 			</div>
+			
+			<div id="error-message"></div>
 		</form>
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
@@ -22,19 +25,27 @@
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 				<button id="close-modal" type="button" class="btn-close" aria-label="Close"></button>
 			</div>
+			<form id="new_admin_name">
+			{% csrf_token %} 
 			{% if admins %}
-			<select class="form-select" aria-label="Default select example" name="courses" onchange="handleSelectChange(this)"> 
+			<select class="form-select" aria-label="Default select example" name="new_user" onchange="handleSelectChange(this)"> 
 				{% for item in admins %}
 				<option value="{{item.username}}"> {{ item.user_name }} </option>
 				{% endfor %}
-				<option value="add-new-course">Add New </option>
+				<option value="add-new-user">Add New </option>
 			</select>
 			{% else %}
 				<div>
-				<input class="form-control" type="text" id="course" name="courses" required>
+					<label for="new_user">Type Your Name:</label>
+					<input type="text" id="new_user" name="new_user" required>
+					<label for="new_user">Password:</label>
+					<input type="text" id="password" name="password" required>
+					<label for="new_user">Type Your Password Again:</label>
+					<input type="text" id="password1" name="password1" required>
 				</div> 
 			{% endif %}
-			<button class="btn btn-primary" id="close-modal" onclick="noButton()">No</button>
+			</form>
+			<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName()">Submit</button>
 			</div>
 		</div>
 	
@@ -143,7 +154,7 @@ input[type="submit"]:hover {
 
   /* Modal Content */
   .modal-content {
-	background-color: #fefefe;
+	background-color: #18070a;
 	margin: 15% auto; /* 15% from the top and centered */
 	padding: 20px;
 	border: 1px solid #888;
@@ -178,10 +189,8 @@ input[type="submit"]:hover {
 			}).then(response => response.json())
 			.then(data => {
 				var jsResponse = data.adminKeyVerify;
-				if (jsResponse) {
-					modal.style.display = "block";
-				}
-			});
+				checkResponse(jsResponse)
+				});
 		}
 	});
 
@@ -195,10 +204,38 @@ input[type="submit"]:hover {
 		}).then(response => response.json())
 		.then(data => {
 			var jsResponse = data.adminKeyVerify;
-			if (jsResponse) {
-				modal.style.display = "block";
-			}
+			checkResponse(jsResponse)
 		});
+	}
+	function SubmitAdminName() {
+		event.preventDefault();
+		var myForm = document.querySelector('#new_admin_name');
+		var formData = new FormData(myForm);
+		fetch('', {
+			method: 'POST',
+			body: formData
+		}).then(response => response.json())
+		.then(data => {
+			var jsResponse = data.adminKeyVerify;
+			checkResponse(jsResponse)
+		});
+	}
+	function checkResponse(response) {
+		const errorMessage = new Error("Incorrect Admin Key!");
+			// get the error message element
+		const errorMessageElement = document.getElementById("error-message");
+		if (response) {
+			errorMessageElement.innerHTML = "";
+			modal.style.display = "block";
+		}
+		else {
+			const errorMessage = new Error("Incorrect Admin Key!");
+			// get the error message element
+			const errorMessageElement = document.getElementById("error-message");
+
+			// set the content of the error message element
+			errorMessageElement.innerHTML = `<p>${errorMessage.message}</p>`;
+		}
 	}
 
 </script>
