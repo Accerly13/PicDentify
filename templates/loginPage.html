@@ -30,7 +30,7 @@
 			{% if admins %}
 			<select class="form-select" aria-label="Default select example" name="new_user" onchange="handleSelectChange(this)"> 
 				{% for item in admins %}
-				<option value="{{item.username}}"> {{ item.user_name }} </option>
+				<option value="{{item.user_key}}"> {{ item.username }} </option>
 				{% endfor %}
 				<option value="add-new-user">Add New </option>
 			</select>
