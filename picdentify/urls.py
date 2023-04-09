@@ -21,6 +21,4 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admindjango/', admin.site.urls),
     path('', include('pages.urls')),
-    path('admin/', include('django.contrib.auth.urls'),  kwargs={'methods': ['GET', 'POST']}),
-
 ]

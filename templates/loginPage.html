@@ -30,10 +30,13 @@
 			{% if admins %}
 			<select class="form-select" aria-label="Default select example" name="new_user" onchange="handleSelectChange(this)"> 
 				{% for item in admins %}
-				<option value="{{item.user_key}}"> {{ item.username }} </option>
+				<option value="{{item.username}}"> {{ item.username }} </option>
 				{% endfor %}
 				<option value="add-new-user">Add New </option>
 			</select>
+			<label for="new_user">Password:</label>
+			<input type="text" id="password" name="password" required>
+			<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
 			{% else %}
 				<div>
 					<input type="text" hidden name="new_user_hidden" value="new">
@@ -50,10 +53,10 @@
 						{% endfor %}
 					</p>
 					{% endif %}
+					<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
 				</div> 
 			{% endif %}
 			</form>
-			<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName()">Submit</button>
 			</div>
 		</div>
 	
@@ -215,15 +218,22 @@ input[type="submit"]:hover {
 			checkResponse(jsResponse)
 		});
 	}
-	function SubmitAdminName() {
+	function SubmitAdminName(num) {
 		event.preventDefault();
 		var myForm = document.querySelector('#new_admin_name');
 		var formData = new FormData(myForm);
 		fetch('', {
 			method: 'POST',
 			body: formData
-		})
-	}
+		}).then(function(response) {
+			if (num == 1) {
+			window.location.href = window.location.href + "dashboard";
+			} else if (num == 2) {
+			alert("Successfully Registered!");
+			}
+		});
+		}
+
 	function checkResponse(response) {
 		const errorMessage = new Error("Incorrect Admin Key!");
 			// get the error message element

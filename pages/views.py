@@ -46,7 +46,7 @@ class TryView(TemplateView):
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
     def get(self, request):
-        print(request.user)
+        print(request.session.get('username'))
         try:
             AdminKey.objects.get(pk=1)
         except:
@@ -83,22 +83,23 @@ class LoginPage(TemplateView):
                 admin_user = AdminUser.objects.create_superuser(admin_id=admins.count()+1, username=request.POST['new_user'], 
                                                    password=request.POST['password'], user_key=teacher_key)
                 admin_user.save()
-                user = authenticate(request, username=request.POST['new_user'], user_key=teacher_key, password=request.POST['password'])
-                if user is not None:
-                    login(request, user)
-                    return redirect('dashboard/')
             else:
-                messages.success(request, ("Invalid Username or Password!"))	
+                messages.success(request, ("Password didn't match!"))	
                 return redirect('/')	
         else:
-            admin = AdminUser.objects.get(user_key=request.POST['new_user'])
-            user = authenticate(request, username=admin.username, user_key=request.POST['new_user'], password=admin.password)
+            username = request.POST['new_user']
+            password = request.POST['password']
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return render(request, 'teacherDashboard.html')
+            return render(request, 'teacherDashboard.html')
             
-class Dashboard(TemplateView):
+class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'teacherDashboard.html'
+
+    def get(self, request):
+        print(request.session.get('username'))
+        return render(request, 'teacherDashboard.html')
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'

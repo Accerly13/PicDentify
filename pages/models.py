@@ -26,12 +26,12 @@ class MyUserManager(BaseUserManager):
 
 class AdminUser(AbstractBaseUser, PermissionsMixin):
     admin_id = models.PositiveIntegerField(primary_key=True)
-    username = models.CharField(max_length=30)
+    username = models.CharField(max_length=30, unique=True)
     user_key = models.CharField(max_length=30, unique=True)
 
     objects = MyUserManager()
 
-    USERNAME_FIELD = 'user_key'
+    USERNAME_FIELD = 'username'
 
     class Meta:
         db_table = 'admin'
