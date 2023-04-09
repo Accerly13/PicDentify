@@ -10,54 +10,64 @@
 </head>
 <body>
 	<div class="container">
-		<h1>Welcome to the Teacher's Lounge!</h1>
+		<h1 class="move-in">Welcome to the Teacher's Lounge!</h1>
 		<form id="admin_key_submit"> 
 			{% csrf_token %}
-			<div style="display: inline-block;">
-				<label for="admin_key">Admin Key:</label>
-				<input type="text" id="admin_key" name="admin_key" required>
-				<input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
+			<div style="color: whitesmoke; text-align: center;" class="form-group">
+			  <label for="admin_key">ADMIN KEY</label>
+			  <input type="text" id="admin_key" name="admin_key" required>
 			</div>
-			
+			<div class="form-group" style="text-align: center;">
+			  <input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
+			</div>
 			<div id="error-message"></div>
-		</form>
+		  </form>
+		  
 	<div id="myModal" class="modal">
 		<!-- Modal content -->
-		<div class="modal-content">
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<button id="close-modal" type="button" class="btn-close" aria-label="Close"></button>
-			</div>
+		<div class="modal-content1">
+			<div class="modal-header">
+				<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				  <button id="close-modal" type="button" class="btn-close" aria-label="Close"></button>
+				</div>
+			  </div>
+					  
 			<form id="new_admin_name">
 			{% csrf_token %} 
 			{% if admins %}
 			<select class="form-select" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)"> 
 				{% for item in admins %}
-				<option value="{{item.username}}"> {{ item.username }} </option>
+					<option value="{{item.username}}">{{ item.username }}</option>
 				{% endfor %}
-				<option value="add-new-user">Add New </option>
+				<option value="add-new-user">Add New</option>
 			</select>
+			
 			<div id="existing-user-section" style="display: block;">
-				<label for="password">Password:</label>
-				<input type="text" id="password" name="password_existing" required>
-				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
+				<label style="color: #080101; text-align: center;" for="password">Password:</label>
+				<input style="margin-bottom: 1rem;" type="text" id="password" name="password_existing" required>
+				
+				<div class="text-center">
+					<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
+				</div>
 			</div>
+
 			<div id="new-user-section" style="display: none;">
 				<input type="text" id="new_user" name="new_user" required>
-				<label for="new_user">Password:</label>
+				<label style="color: #080101;" for="new_user">Password:</label>
 				<input type="text" id="password" name="password" required>
-				<label for="new_user">Type Your Password Again:</label>
-				<input type="text" id="password1" name="password1" required>
+				<label style="color: #080101;" for="new_user">Type Your Password Again:</label>
+				<input style="margin-bottom: 1rem;" type="text" id="password1" name="password1" required>
 				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
 			</div>
 			
 			{% else %}
 				<div>
-					<label for="new_user">Type Your Name:</label>
+					<label style="color: #080101;" for="new_user">Type Your Name:</label>
 					<input type="text" id="new_user" name="new_user" required>
-					<label for="new_user">Password:</label>
+					<label style="color: #080101;" for="new_user">Password:</label>
 					<input type="text" id="password" name="password" required>
-					<label for="new_user">Type Your Password Again:</label>
-					<input type="text" id="password1" name="password1" required>
+					<label style="color: #080101;" for="new_user">Type Your Password Again:</label>
+					<input style="margin-bottom: 1rem;" type="text" id="password1" name="password1" required>
 					{% if messages %}
 					<p class="messages">
 						{% for message in messages %}
@@ -78,13 +88,45 @@
 </html>
 
 <style>
+.move-in {
+  position: relative;
+  animation: moveIn 1s ease-in-out forwards;
+}
+
+@keyframes moveIn {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
 body {
-	background-image: url("{% static 'img/classroom.png' %}");
-	background-size: cover;
-	font-family: Arial, sans-serif;
-	color: #fff;
-	margin: 0;
-	padding: 0;
+  background-image: url("{% static 'img/classroom.png' %}");
+  background-size: 1200px 800px; /* Replace with the pixel values that work for you */
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
 }
 
 .confirm-message {
@@ -94,56 +136,95 @@ body {
   font-weight: bold;
   }
 
-.container {
-	background-color: rgba(0, 0, 0, 0.7);
-	padding: 30px;
-	border-radius: 10px;
-	margin: 10vh auto;
-	max-width: 90vw;
-	text-align: center;
+  .container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 10px;
+  margin: 10vh auto; /* Changed margin to use auto for left and right */
+  max-width: 90vw;
+  max-height: 90vw;
+  text-align: center;
 }
+
 
 h1 {
 	font-size: 36px;
 	margin-bottom: 30px;
 }
 
-form {
-	display: inline-block;
-	text-align: left;
+.form-group {
+  margin-bottom: 20px;
 }
 
-label {
-	display: block;
-	margin-bottom: 10px;
-	font-size: 18px;
-}
+    /* Style the select dropdown */
+    .form-select {
+        width: 100%;
+        padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
 
-input[type="text"],
-input[type="password"] {
-	padding: 10px;
-	border-radius: 5px;
-	border: none;
-	width: 100%;
-	margin-bottom: 20px;
-	font-size: 18px;
-}
+    /* Style the label */
+    label {
+        display: block;
+        margin: 0.5rem;
+        font-weight: bold;
+    }
+
+    /* Style the input fields */
+	input[type="text"] {
+		width: 100%;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid #ced4da;
+		border-radius: 0.25rem;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		text-align: center;
+		}
+
+    /* Style the button */
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
 
 input[type="submit"] {
-	background-color: #ffca3a;
-	color: #fff;
-	padding: 10px 20px;
-	border-radius: 5px;
-	border: none;
-	font-size: 20px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-	text-align: center;
-	
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 input[type="submit"]:hover {
-	background-color: #ffa200;
+  background-color: #3e8e41;
 }
 
 @media only screen and (min-width: 768px) {
@@ -184,6 +265,13 @@ input[type="submit"]:hover {
 	width: 40%; /* Could be more or less, depending on screen size */
   }
 
+  .modal-content1 {
+	background-color: whitesmoke;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #080101;
+	width: 40%; /* Could be more or less, depending on screen size */
+  }
 </style>
 
 <script>
