@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% load static %}
 	<title>Teacher Login Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -29,41 +30,43 @@
 			<form id="new_admin_name">
 			{% csrf_token %} 
 			{% if admins %}
-			<div class="form-group">
-				<label for="new_user">Select Admin User:</label>
-				<select class="form-control" id="new_user" name="new_user" onchange="handleSelectChange(this)"> 
-					{% for item in admins %}
-					<option value="{{item.username}}"> {{ item.username }} </option>
-					{% endfor %}
-					<option value="add-new-user">Add New </option>
-				</select>
-			</div>
-			<div class="form-group">
+			<select class="form-select" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)"> 
+				{% for item in admins %}
+				<option value="{{item.username}}"> {{ item.username }} </option>
+				{% endfor %}
+				<option value="add-new-user">Add New </option>
+			</select>
+			<div id="existing-user-section" style="display: block;">
 				<label for="password">Password:</label>
-				<input type="password" class="form-control" id="password" name="password" required>
-			</div>
-			<div class="form-group">
+				<input type="text" id="password" name="password_existing" required>
 				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
 			</div>
-			
-			{% else %}
-			<div id="myModal">
-				<input type="text" hidden name="new_user_hidden" value="new">
-				<label for="new_user">Type Your Name:</label>
+			<div id="new-user-section" style="display: none;">
 				<input type="text" id="new_user" name="new_user" required>
 				<label for="new_user">Password:</label>
 				<input type="text" id="password" name="password" required>
 				<label for="new_user">Type Your Password Again:</label>
 				<input type="text" id="password1" name="password1" required>
-				{% if messages %}
-				  <p class="messages">
-					{% for message in messages %}
-					  <p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
-					{% endfor %}
-				  </p>
-				{% endif %}
-				<button class="btn btn-primary" onclick="SubmitAdminName(2); document.getElementById('myModal').style.display='none'">Register</button>
-			  </div>			  
+				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
+			</div>
+			
+			{% else %}
+				<div>
+					<label for="new_user">Type Your Name:</label>
+					<input type="text" id="new_user" name="new_user" required>
+					<label for="new_user">Password:</label>
+					<input type="text" id="password" name="password" required>
+					<label for="new_user">Type Your Password Again:</label>
+					<input type="text" id="password1" name="password1" required>
+					{% if messages %}
+					<p class="messages">
+						{% for message in messages %}
+						<p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
+						{% endfor %}
+					</p>
+					{% endif %}
+					<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
+				</div> 
 			{% endif %}
 			</form>
 			</div>
@@ -76,7 +79,7 @@
 
 <style>
 body {
-	background-image: url('classroom.jpg');
+	background-image: url("{% static 'img/classroom.png' %}");
 	background-size: cover;
 	font-family: Arial, sans-serif;
 	color: #fff;
@@ -184,7 +187,24 @@ input[type="submit"]:hover {
 </style>
 
 <script>
-	 var closeModalBtn = document.getElementById("close-modal");
+	function handleSelectChange(selectElement) {
+		const selectedOption = selectElement.value;
+		const newUserSection = document.getElementById("new-user-section");
+		const existingUserSection = document.getElementById("existing-user-section");
+
+		if (selectedOption === "add-new-user") {
+			newUserSection.style.display = "block";
+			existingUserSection.style.display = "none";
+
+
+		} else {
+			newUserSection.style.display = "none";
+			existingUserSection.style.display = "block";
+
+		}
+	}
+
+	var closeModalBtn = document.getElementById("close-modal");
 		closeModalBtn.addEventListener("click", function() {
 		var modalContainer = document.querySelector(".modal");
 		modalContainer.style.display = "none";
@@ -227,11 +247,13 @@ input[type="submit"]:hover {
 			checkResponse(jsResponse)
 		});
 	}
-
 	function SubmitAdminName(num) {
 		event.preventDefault();
 		var myForm = document.querySelector('#new_admin_name');
 		var formData = new FormData(myForm);
+		if (num == 2) {
+			formData.append('new_user_hidden', 'new');
+		}
 		fetch('', {
 			method: 'POST',
 			body: formData
@@ -239,7 +261,7 @@ input[type="submit"]:hover {
 			if (num == 1) {
 			window.location.href = window.location.href + "dashboard";
 			} else if (num == 2) {
-			swal({
+				swal({
 				title: "Successfully Registered!",
 				icon: "success",
 				buttons: false,
@@ -247,10 +269,7 @@ input[type="submit"]:hover {
 			});
 			}
 		});
-	}
-
-
-
+		}
 
 	function checkResponse(response) {
 		const errorMessage = new Error("Incorrect Admin Key!");
