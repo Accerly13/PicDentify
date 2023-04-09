@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% load static %}
 	<title>Teacher Login Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
@@ -67,7 +68,7 @@
 
 <style>
 body {
-	background-image: url('classroom.jpg');
+	background-image: url('{% static 'img/classroom.png' %}');
 	background-size: cover;
 	font-family: Arial, sans-serif;
 	color: #fff;
@@ -175,7 +176,7 @@ input[type="submit"]:hover {
 </style>
 
 <script>
-	 var closeModalBtn = document.getElementById("close-modal");
+	var closeModalBtn = document.getElementById("close-modal");
 		closeModalBtn.addEventListener("click", function() {
 		var modalContainer = document.querySelector(".modal");
 		modalContainer.style.display = "none";
