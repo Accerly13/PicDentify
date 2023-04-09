@@ -76,7 +76,7 @@ class LoginPage(TemplateView):
                return JsonResponse({'adminKeyVerify': False})
         elif request.POST.get('new_user_hidden'):
             teacher_key = generate_random_string()
-
+            print("hey")
             if request.POST['password'] == request.POST['password1']:
                 admins = AdminUser.objects.all()
 
