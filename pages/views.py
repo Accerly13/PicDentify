@@ -92,14 +92,16 @@ class LoginPage(TemplateView):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                request.session['username'] = username
+                request.session.save()
             return render(request, 'teacherDashboard.html')
             
 class Dashboard(LoginRequiredMixin, TemplateView):
     template_name = 'teacherDashboard.html'
 
     def get(self, request):
-        print(request.session.get('username'))
-        return render(request, 'teacherDashboard.html')
+        user = AdminUser.objects.get(username=request.session.get('username'))
+        return render(request, 'teacherDashboard.html', {'user_key':user.user_key})
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
