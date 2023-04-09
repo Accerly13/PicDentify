@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Program</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-HBcVEZp2mZq5Fc+1QjtwPgHzVJgkdTJA0JCBDDvPXdUnZjzc4KPQJw520KVUhY+" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         /* Add your custom styles here */
 		
@@ -218,12 +218,66 @@ footer {
 
   /* Modal Content */
   .modal-content {
-	background-color: #18070a;
+	background-color: whitesmoke;
 	margin: 15% auto; /* 15% from the top and centered */
 	padding: 20px;
-	border: 1px solid #888;
+	border: 1px solid #080101;
+	width: 400%; /* Could be more or less, depending on screen size */
+  }
+
+  .modal-content1 {
+	background-color: whitesmoke;
+	margin: 15% auto; /* 15% from the top and centered */
+	padding: 20px;
+	border: 1px solid #080101;
 	width: 40%; /* Could be more or less, depending on screen size */
   }
+
+  .dropdown-menu {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0;
+  text-align: center;
+  width: 200px;
+}
+
+.dropdown-menu a {
+  color: #333;
+  display: block;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: bolder;
+}
+
+.dropdown-menu a:hover {
+  background-color: #eee;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdown-menu:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -10px;
+  right: 10px;
+  border: 10px solid transparent;
+  border-bottom-color: #ccc;
+}
+
+.dropdown-menu:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: -11px;
+  right: 9px;
+  border: 10px solid transparent;
+  border-bottom-color: #fff;
+}
 
 
     </style>
@@ -241,9 +295,6 @@ footer {
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a style="color: #fff; cursor: pointer;" class="nav-link" onclick="showPopUp()">My Teacher's Key</a>
-        </li>
-        <li class="nav-item active">
           <a style="color: #fff;" class="nav-link" href="#">Home</a>
         </li>
         <li class="nav-item dropdown">
@@ -260,21 +311,37 @@ footer {
         <li class="nav-item">
           <a style="color: #fff;" class="nav-link" href="#">Students</a>
         </li>
+        <li class="nav-item dropdown">
+          <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog fa-lg" style="transform: rotate(90deg);"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settingsDropdown">
+            <a class="dropdown-item" onclick="showPopUp()">My Teacher's Key</a>
+            <hr>
+            <a class="dropdown-item" href="/logout_view">Logout</a>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
 </nav>
 <!-- Main Content -->
-  <div id="myTeacherKeyModal" class="modal">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button id="close-modal" type="button" class="btn-close" aria-label="Close"></button>
-        <button id="copy-btn" onclick="CopyUserKey()">Copy Key</button>
-      </div>
-      <p id="user-key" style="color:white">{{ user_key }}</p>
+    <div id="myTeacherKeyModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content1">
+        <div class="modal-header">
+          <button style="color: red; font-size: 3rem;" type="button" class="close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center; font-weight: bold; font-size: large;" class="user-key">{{ user_key }}</p>
+        </div>
+        <div class="modal-footer d-flex justify-content-center">
+          <button type="button" class="btn btn-primary" id="copy-btn" onclick="CopyUserKey()">Copy Key</button>
+        </div>
+        <p hidden id="user-key" style="color:rgb(10, 9, 9)">{{ user_key }}</p>
+      </div>    
     </div>
-    </div>
+
     <div class="container">
         <div class="row">
 			
@@ -334,7 +401,7 @@ footer {
             </div>
             
             <!-- Modal -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -378,6 +445,12 @@ footer {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+
+  function closeModal() {
+    var modal = document.querySelector('.modal');
+    modal.style.display = 'none';
+  }
+
     var modal = document.getElementById("myTeacherKeyModal");
     function showPopUp() {
       modal.style.display = "block";
