@@ -4,6 +4,7 @@
 	<title>Teacher Login Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 <body>
@@ -28,33 +29,41 @@
 			<form id="new_admin_name">
 			{% csrf_token %} 
 			{% if admins %}
-			<select class="form-select" aria-label="Default select example" name="new_user" onchange="handleSelectChange(this)"> 
-				{% for item in admins %}
-				<option value="{{item.username}}"> {{ item.username }} </option>
-				{% endfor %}
-				<option value="add-new-user">Add New </option>
-			</select>
-			<label for="new_user">Password:</label>
-			<input type="text" id="password" name="password" required>
-			<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
+			<div class="form-group">
+				<label for="new_user">Select Admin User:</label>
+				<select class="form-control" id="new_user" name="new_user" onchange="handleSelectChange(this)"> 
+					{% for item in admins %}
+					<option value="{{item.username}}"> {{ item.username }} </option>
+					{% endfor %}
+					<option value="add-new-user">Add New </option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="password">Password:</label>
+				<input type="password" class="form-control" id="password" name="password" required>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
+			</div>
+			
 			{% else %}
-				<div>
-					<input type="text" hidden name="new_user_hidden" value="new">
-					<label for="new_user">Type Your Name:</label>
-					<input type="text" id="new_user" name="new_user" required>
-					<label for="new_user">Password:</label>
-					<input type="text" id="password" name="password" required>
-					<label for="new_user">Type Your Password Again:</label>
-					<input type="text" id="password1" name="password1" required>
-					{% if messages %}
-					<p class="messages">
-						{% for message in messages %}
-						<p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
-						{% endfor %}
-					</p>
-					{% endif %}
-					<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
-				</div> 
+			<div id="myModal">
+				<input type="text" hidden name="new_user_hidden" value="new">
+				<label for="new_user">Type Your Name:</label>
+				<input type="text" id="new_user" name="new_user" required>
+				<label for="new_user">Password:</label>
+				<input type="text" id="password" name="password" required>
+				<label for="new_user">Type Your Password Again:</label>
+				<input type="text" id="password1" name="password1" required>
+				{% if messages %}
+				  <p class="messages">
+					{% for message in messages %}
+					  <p style="color: red; text-align: center; font-weight: bold;" {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message.message }}</p>
+					{% endfor %}
+				  </p>
+				{% endif %}
+				<button class="btn btn-primary" onclick="SubmitAdminName(2); document.getElementById('myModal').style.display='none'">Register</button>
+			  </div>			  
 			{% endif %}
 			</form>
 			</div>
@@ -218,6 +227,7 @@ input[type="submit"]:hover {
 			checkResponse(jsResponse)
 		});
 	}
+
 	function SubmitAdminName(num) {
 		event.preventDefault();
 		var myForm = document.querySelector('#new_admin_name');
@@ -229,10 +239,18 @@ input[type="submit"]:hover {
 			if (num == 1) {
 			window.location.href = window.location.href + "dashboard";
 			} else if (num == 2) {
-			alert("Successfully Registered!");
+			swal({
+				title: "Successfully Registered!",
+				icon: "success",
+				buttons: false,
+				timer: 2000 // 2 seconds
+			});
 			}
 		});
-		}
+	}
+
+
+
 
 	function checkResponse(response) {
 		const errorMessage = new Error("Incorrect Admin Key!");
