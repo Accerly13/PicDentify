@@ -30,19 +30,18 @@
 			<form id="new_admin_name">
 			{% csrf_token %} 
 			{% if admins %}
-			<select class="form-select" aria-label="Default select example" name="new_user" onchange="handleSelectChange(this)"> 
+			<select class="form-select" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)"> 
 				{% for item in admins %}
 				<option value="{{item.username}}"> {{ item.username }} </option>
 				{% endfor %}
 				<option value="add-new-user">Add New </option>
 			</select>
 			<div id="existing-user-section" style="display: block;">
-				<label for="new_user">Password:</label>
-				<input type="text" id="password" name="password" required>
+				<label for="password">Password:</label>
+				<input type="text" id="password" name="password_existing" required>
 				<button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(1)">Login</button>
 			</div>
 			<div id="new-user-section" style="display: none;">
-				<input type="text" hidden name="new_user_hidden" value="new">
 				<input type="text" id="new_user" name="new_user" required>
 				<label for="new_user">Password:</label>
 				<input type="text" id="password" name="password" required>
@@ -53,7 +52,6 @@
 			
 			{% else %}
 				<div>
-					<input type="text" hidden name="new_user_hidden" value="new">
 					<label for="new_user">Type Your Name:</label>
 					<input type="text" id="new_user" name="new_user" required>
 					<label for="new_user">Password:</label>
@@ -253,6 +251,9 @@ input[type="submit"]:hover {
 		event.preventDefault();
 		var myForm = document.querySelector('#new_admin_name');
 		var formData = new FormData(myForm);
+		if (num == 2) {
+			formData.append('new_user_hidden', 'new');
+		}
 		fetch('', {
 			method: 'POST',
 			body: formData
@@ -260,7 +261,12 @@ input[type="submit"]:hover {
 			if (num == 1) {
 			window.location.href = window.location.href + "dashboard";
 			} else if (num == 2) {
-			alert("Successfully Registered!");
+				swal({
+				title: "Successfully Registered!",
+				icon: "success",
+				buttons: false,
+				timer: 2000 // 2 seconds
+			});
 			}
 		});
 		}

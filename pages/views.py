@@ -76,7 +76,6 @@ class LoginPage(TemplateView):
                return JsonResponse({'adminKeyVerify': False})
         elif request.POST.get('new_user_hidden'):
             teacher_key = generate_random_string()
-            print("hey")
             if request.POST['password'] == request.POST['password1']:
                 admins = AdminUser.objects.all()
 
@@ -87,9 +86,10 @@ class LoginPage(TemplateView):
                 messages.success(request, ("Password didn't match!"))	
                 return redirect('/')	
         else:
-            username = request.POST['new_user']
-            password = request.POST['password']
+            username = request.POST['existing_user']
+            password = request.POST['password_existing']
             user = authenticate(request, username=username, password=password)
+            print(user)
             if user is not None:
                 login(request, user)
                 request.session['username'] = username
