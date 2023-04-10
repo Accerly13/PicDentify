@@ -90,7 +90,6 @@ class LoginPage(TemplateView):
             username = request.POST['existing_user']
             password = request.POST['password_existing']
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 request.session['username'] = username
@@ -131,15 +130,40 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['newtopic'], owner_id=user.admin_id)
                 topic.save()
                 difficulty = Difficulty.objects.all()
-                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'], words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'])
+                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                          words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'])
 
         return render(request, 'teacherDashboard.html')
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
 
+    def get(self, request):
+        try:
+            request.session['username']
+            return render(request, 'studentDashboard.html')
+        except:
+
+            return redirect('/studentlogin/')
+
 class StudentActivity(TemplateView):
     template_name = 'studentActivity.html'
+    
 
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'
+
+    def post(self, request):
+        if request.POST.get('admin_key'):
+            try:
+                admin_user = AdminUser.objects.get(user_key=request.POST['admin_key'])
+                username = admin_user.username
+                password = admin_user.password
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    request.session['username'] = username
+                    request.session.save()
+                return JsonResponse({'adminKeyVerify': True})
+            except:
+                return JsonResponse({'adminKeyVerify': False})

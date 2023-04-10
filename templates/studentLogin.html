@@ -2,7 +2,7 @@
 <html>
 <head>
     {% load static %}
-	<title>Teacher Login Page</title>
+	<title>Student Login Page</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -11,14 +11,16 @@
 <body>
 		<div class="container">
 			<h1 class="move-in">Student Login Page</h1>
-			<form id="admin_key_submit"> 
+			<form method="post" id="admin_key_submit">
+        {% csrf_token %} 
 				<div style="color: whitesmoke; text-align: center;" class="form-group">
 				  <label>TEACHER KEY</label>
-				  <input type="text" id="" name="admin_key" required>
+				  <input type="text" id="admin_key" name="admin_key" required>
 				</div>
 				<div class="form-group" style="text-align: center;">
-				  <input type="submit" value="LOGIN">
+          <input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
 				</div>
+      <div id="error-message"></div>
 			  </form>
 		</div>
 </body>
@@ -167,5 +169,47 @@ input[type="submit"]:hover {
 </style>
 
 <script>
+  const adminKeyInput = document.getElementById('admin_key');
+	adminKeyInput.addEventListener('keydown', function(event) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			var myForm = document.querySelector('#admin_key_submit');
+			var formData = new FormData(myForm);
+			fetch('/studentlogin/', {
+				method: 'POST',
+				body: formData
+			}).then(response => response.json())
+			.then(data => {
+				var jsResponse = data.adminKeyVerify;
+				checkResponse(jsResponse)
+				});
+		}
+	});
+
+	function SubmitAdminKey() {
+		event.preventDefault();
+		var myForm = document.querySelector('#admin_key_submit');
+		var formData = new FormData(myForm);
+		fetch('/studentlogin/', {
+			method: 'POST',
+			body: formData
+		}).then(response => response.json())
+		.then(data => {
+			var jsResponse = data.adminKeyVerify;
+			checkResponse(jsResponse)
+		});
+	}
+	function checkResponse(response) {
+		const errorMessage = new Error("Incorrect Teacher Key!");
+			// get the error message element
+		const errorMessageElement = document.getElementById("error-message");
+		if (response) {
+      window.location.href = window.location.origin + "/studentdashboard";
+		}
+		else {
+			// set the content of the error message element
+			errorMessageElement.innerHTML = `<p>${errorMessage.message}</p>`;
+		}
+	}
 	
 </script>
