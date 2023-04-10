@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+	<title>Teacher Login Page</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+<body>
+		<div class="container">
+			<h1 class="move-in">Student Login Page</h1>
+			<form id="admin_key_submit"> 
+				<div style="color: whitesmoke; text-align: center;" class="form-group">
+				  <label>TEACHER KEY</label>
+				  <input type="text" id="" name="admin_key" required>
+				</div>
+				<div class="form-group" style="text-align: center;">
+				  <input type="submit" value="LOGIN">
+				</div>
+			  </form>
+		</div>
+</body>
+</html>
+
+<style>
+.move-in {
+  position: relative;
+  animation: moveIn 1s ease-in-out forwards;
+}
+
+@keyframes moveIn {
+  from {
+    top: -50px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+body {
+  background-image: url("{% static 'img/classroom.png' %}");
+  background-size: 1200px 800px; /* Replace with the pixel values that work for you */
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  /* Adjust background image size for mobile devices with screens up to 600px wide */
+  body {
+    background-size: contain;
+  }
+}
+
+.confirm-message {
+  font-size: 18px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+  }
+
+  .container {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 30px;
+  border-radius: 10px;
+  margin: 10vh auto; /* Changed margin to use auto for left and right */
+  max-width: 90vw;
+  max-height: 90vw;
+  text-align: center;
+}
+
+
+h1 {
+	font-size: 36px;
+	margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+    /* Style the label */
+    label {
+        display: block;
+        margin: 0.5rem;
+        font-weight: bold;
+    }
+
+    /* Style the input fields */
+	input[type="text"] {
+		width: 100%;
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.5;
+		color: #495057;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid #ced4da;
+		border-radius: 0.25rem;
+		transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		text-align: center;
+		}
+
+    /* Style the button */
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: #007bff;
+        border: 1px solid #007bff;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+            border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+
+input[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+@media only screen and (min-width: 768px) {
+	.container {
+		margin: 10vh auto;
+	}
+	
+	h1 {
+		font-size: 48px;
+		margin-bottom: 50px;
+	}
+	
+	form {
+		max-width: 500px;
+		margin: 0 auto;
+	}
+}
+</style>
+
+<script>
+	
+</script>
