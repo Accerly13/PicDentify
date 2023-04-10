@@ -4,8 +4,8 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Program</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-gmw1zgc0v/WSR/8RkOcLy0tdgN02v0qQ2t8/A9kY1DnAe+XYHkR8tPfMh+iZJw1s+3Q2E8YXlJk2yhiaPmeoew==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         /* Add your custom styles here */
@@ -169,6 +169,19 @@
           background-color: #f8f9fa;
         }
 
+        .navbar-nav .nav-link {
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+          .navbar-nav .nav-link:hover {
+          background-color: #5442a1;
+          color: #fff;
+        }
+
+        .navbar {
+          padding: 0;
+      }
+
 /* Footer styles */
 
 footer {
@@ -285,47 +298,41 @@ footer {
 </head>
 <body>
     <!-- Navbar -->
-<nav  class="navbar navbar-expand-lg navbar-light bg-light">
-  <div style="background-color: #333;" class="container-fluid">
-    <a style="color: #fff;" class="navbar-brand" href="#">
-      <img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a style="color: #fff;" class="nav-link" href="#">Home</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            History
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Game 1</a>
-            <a class="dropdown-item" href="#">Game 2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Clear History</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a style="color: #fff;" class="nav-link" href="#">Students</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="settingsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-cog fa-lg" style="transform: rotate(90deg);"></i>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="settingsDropdown">
-            <a class="dropdown-item" onclick="showPopUp()">My Teacher's Key</a>
-            <hr>
-            <a class="dropdown-item" href="/logout_view">Logout</a>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div style="background-color: #333;" class="container-fluid">
+        <a style="color: #fff;" class="navbar-brand" href="#">
+          <img src="{% static 'img/logo.png' %}" alt="" class="logo-img">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active" style="border-right: 1px solid white;">
+              <a style="color: #fff;" class="nav-link" href="#">Home</a>
+            </li>
+            <li class="nav-item" style="border-right: 1px solid white;">
+              <a style="color: #fff;" class="nav-link" onclick="showPopUp()">My Teacher's Key</a>
+            </li>
+            <li class="nav-item dropdown" style="border-right: 1px solid white;">
+              <a style="color: #fff;" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                History
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Game 1</a>
+                <a class="dropdown-item" href="#">Game 2</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Clear History</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a style="color: #fff;" class="nav-link" href="/logout_view">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
 <!-- Main Content -->
     <div id="myTeacherKeyModal" class="modal">
       <!-- Modal content -->
@@ -358,27 +365,50 @@ footer {
             </div>
 			
           <div class="col-md-6 mx-auto">
-              <div class="form-container">
-                  <div class="form-group form-group-icon">
-                      <label for="difficulty"><i class="fas fa-star icon"></i>Difficulty Level:</label>
-                      <select class="form-control" id="difficulty" name="difficulty">
-                          <option value="easy">Easy</option>
-                          <option value="medium">Medium</option>
-                          <option value="hard">Hard</option>
-                      </select>
-                  </div>
-                  <div class="form-group form-group-icon">
-                    <label for="newtopic"><i class="fas fa-plus icon"></i>Add a Topic:</label>
-                    <input type="text" class="form-control" id="newtopic" name="newtopic">
-                  </div>
-
-                  <div class="form-group form-group-icon">
-                    <label for="time_limit"><i class="far fa-clock icon"></i>Time Limit (Every Question):</label>
-                    <div class="input-group">
+            <div class="form-container">
+              <div class="form-group form-group-icon">
+                  <label for="difficulty"><i class="fas fa-star icon"></i>Difficulty Level:</label>
+                  <select class="form-control" id="difficulty" name="difficulty">
+                      <option value="easy">Easy</option>
+                      <option value="medium">Medium</option>
+                      <option value="hard">Hard</option>
+                  </select>
+              </div>
+              <div class="form-group form-group-icon">
+                  <label for="newtopic"><i class="fas fa-plus icon"></i>Add a Topic:</label>
+                  <input type="text" class="form-control" id="newtopic" name="newtopic">
+              </div>
+          
+              <div class="form-group form-group-icon">
+                  <label for="time_limit"><i class="far fa-clock icon"></i>Time Limit (Every Question):</label>
+                  <div class="input-group">
                       <input type="number" class="form-control" id="time_limit" name="time_limit" min="1" max="20">
-                    </div>
                   </div>
-            </div>
+              </div>
+              
+              <div class="form-group form-group-icon">
+                  <label for="points_per_question"><i class="fas fa-star icon"></i>Points per Question:</label>
+                  <select class="form-control" id="points_per_question" name="points_per_question">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                  </select>
+              </div>
+              
+              <div class="form-group form-group-icon">
+                  <label for="max_points"><i class="fas fa-star icon"></i>Max Points:</label>
+                  <select class="form-control" id="max_points" name="max_points">
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="30">30</option>
+                      <option value="40">40</option>
+                      <option value="50">50</option>
+                  </select>
+              </div>
+          </div>
+          
 
             <div style="text-align:center; margin: 1rem;">
               <button type="button" class="btn btn-primary mt-2" data-toggle="modal" data-target="#confirmModal">Create Game</button>
