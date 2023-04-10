@@ -142,7 +142,6 @@ class StudentDashboard(TemplateView):
         try:
             user = AdminUser.objects.get(username=request.session['username'])
             topics = Topics.objects.filter(owner_id=user.admin_id)
-
             return render(request, 'studentDashboard.html', {'topics':topics})
         except:
 
