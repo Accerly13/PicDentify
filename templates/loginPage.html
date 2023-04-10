@@ -347,7 +347,7 @@ input[type="submit"]:hover {
 			body: formData
 		}).then(function(response) {
 			if (num == 1) {
-			window.location.href = window.location.href + "dashboard";
+				window.location.href = window.location.origin + "/dashboard";
 			} else if (num == 2) {
 				swal({
 				title: "Successfully Registered!",

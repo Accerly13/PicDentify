@@ -20,6 +20,7 @@
 </head>
 <body>
 	<!-- Navigation bar -->
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start">
         <a class="navbar-brand" href="#">Teacher's Name</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,18 +29,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a>
+              <a class="nav-link" href="/logout_view"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </li>
           </ul>
         </div>
       </nav>
-      
+    <div class="container mt-3 d-flex justify-content-center">
       
     <div class="container">
         <div class="row">
+          {% for item in topics %}
           <div class="col-sm-4 mb-4">
             <div class="box">
-              <h2 class="mt-2">Homonyms</h2>
+              <h2 class="mt-2">{{item.topic_name}}</h2>
               <p>Choose your level of difficulty:</p>
               <div class="difficulty">
                 <div class="level easy">
@@ -54,60 +56,7 @@
               </div>
             </div>
           </div>
-      
-          <div class="col-sm-4 mb-4">
-            <div class="box">
-              <h2 class="mt-2">Synonyms</h2>
-              <p>Choose your level of difficulty:</p>
-              <div class="difficulty">
-                <div class="level easy">
-                  <a href="#">Easy</a>
-                </div>
-                <div class="level medium">
-                  <a href="#">Medium</a>
-                </div>
-                <div class="level hard">
-                  <a href="#">Hard</a>
-                </div>
-              </div>
-            </div>
-          </div>
-      
-          <div class="col-sm-4 mb-4">
-            <div class="box">
-              <h2 class="mt-2">Antonyms</h2>
-              <p>Choose your level of difficulty:</p>
-              <div class="difficulty">
-                <div class="level easy">
-                  <a href="#">Easy</a>
-                </div>
-                <div class="level medium">
-                  <a href="#">Medium</a>
-                </div>
-                <div class="level hard">
-                  <a href="#">Hard</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-4 mb-4">
-            <div class="box">
-              <h2 class="mt-2">Geographs</h2>
-              <p>Choose your level of difficulty:</p>
-              <div class="difficulty">
-                <div class="level easy">
-                  <a href="#">Easy</a>
-                </div>
-                <div class="level medium">
-                  <a href="#">Medium</a>
-                </div>
-                <div class="level hard">
-                  <a href="#">Hard</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
       
