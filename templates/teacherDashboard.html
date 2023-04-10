@@ -348,13 +348,11 @@ footer {
 			
             <div class="col-md-6 mx-auto mb-2">
               <div class="form-container">
-                <form action="" method="POST" enctype="multipart/form-data">
                   <div class="form-group form-group-icon">
                     <label for="num_words"><i class="fas fa-pencil-alt icon"></i>Number of Words:</label>
                     <input type="number" class="form-control" id="num_words" name="num_words">
                   </div>
                   <div id="words_container"></div>
-                </form>
               </div>
             </div>
 			
@@ -457,11 +455,6 @@ footer {
       modal.style.display = "block";
       
     }
-    var closeModalBtn = document.getElementById("close-modal");
-		closeModalBtn.addEventListener("click", function() {
-      var modalContainer = document.querySelector(".modal");
-      modalContainer.style.display = "none";
-    });
             $(document).ready(function() {
         $('#topic').change(function() {
             if ($(this).val() == 'addnew') { // if "add new" is selected
