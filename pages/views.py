@@ -140,8 +140,10 @@ class StudentDashboard(TemplateView):
 
     def get(self, request):
         try:
-            request.session['username']
-            return render(request, 'studentDashboard.html')
+            user = AdminUser.objects.get(username=request.session['username'])
+            topics = Topics.objects.filter(owner_id=user.admin_id)
+
+            return render(request, 'studentDashboard.html', {'topics':topics})
         except:
 
             return redirect('/studentlogin/')
