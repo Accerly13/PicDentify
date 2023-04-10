@@ -14,7 +14,7 @@
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 20px;
-		background-color: #FFC107;
+		background-color: #1b75be;
 		border-radius: 10px;
 		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 		margin-top: 1rem;
@@ -24,71 +24,93 @@
 		position: relative;
 	}
 
-  /* Level container styles */
-  #level-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+	#level-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 
-  #level-container label {
-    font-size: 18px;
-    margin-right: 10px;
-	font-weight:bold;
-  }
+#level-container label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4B0082;
+  margin-right: 10px;
+}
 
-  /* Question info container styles */
+#level {
+  display: inline-block;
+  font-size: 18px;
+  font-weight: bold;
+  color: #4B0082;
+  background-color: #8FBC8F;
+  padding: 5px 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+}
+
   #question-info-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F6E0B5;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  margin-bottom: 0.5rem;
+}
+
+#question-counter {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4B0082;
+  margin: 0;
+}
+
+#timer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#time-remaining {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4B0082;
+  margin: 0 20px 0 0;
+}
+
+#time-bar {
+  width: 150px;
+  height: 10px;
+  background-color: #8FBC8F;
+  border-radius: 5px;
+  position: relative;
+}
+
+#time-bar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #4B0082;
+  border-radius: 5px;
+  animation: timer-animation 30s linear forwards;
+}
+
+@keyframes timer-animation {
+  0% {
+    width: 100%;
   }
-
-  #question-counter {
-    font-size: 18px;
-    margin: 0;
-	
+  100% {
+    width: 0%;
   }
+}
 
-  #timer-container {
-    display: flex;
-    align-items: center;
-  }
-
-  #time-remaining {
-    font-size: 18px;
-    margin: 0;
-    margin-right: 10px;
-  }
-
-  #time-bar {
-    width: 100px;
-    height: 10px;
-    background-color: #ccc;
-    border-radius: 5px;
-    position: relative;
-  }
-
-  #time-bar::before {
-    display: block;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	background-color: #4CAF50;
-	border-radius: 5px;
-	animation: timeBar 30s linear;
-	}
-
-	@keyframes timeBar {
-	0% {
-	width: 100%;
-	}
-	100% {
-	width: 0;
-	}
-	}
 
 	#question-container {
 	  display: flex;
@@ -104,51 +126,55 @@
 	  height: auto;
 	  max-height: 450px;
 	  border-radius: 10px;
+	  image-rendering: optimizeQuality; /* improve image rendering quality */
 	}
 
 
 	/* Choices container styles */
 	#choices-container {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-	grid-gap: 20px;
-	margin-bottom: 20px;
-	}
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 50px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-	.choice-btn {
-	display: block;
-	width: 100%;
-	padding: 15px;
-	font-size: 18px;
-	font-weight: bold;
-	text-align: center;
-	color: #fff;
-	background-color: #4CAF50;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-	transition: background-color 0.2s ease-in-out;
-	}
+.choice-btn {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4B0082;
+  background-color: #F6E0B5;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 50px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+  margin: 0.2rem;
+}
 
-	.choice-btn:hover {
-	background-color: #3e8e41;
-	}
+.choice-btn:hover {
+  transform: translateY(-2px);
+  background-color: #8FBC8F;
+  color: #fff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.4);
+}
 
-	/* Progress bar container styles */
-	#progress-bar-container {
-	height: 10px;
-	background-color: #ccc;
-	border-radius: 5px;
-	margin-bottom: 20px;
-	}
+@keyframes progress-bar-animation {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
 
-	#progress-bar {
-	height: 100%;
-	background-color: #4CAF50;
-	border-radius: 5px;
-	width: 0;
-	transition: width 0.5s ease-in-out;
-	}
 
 	/* Action container styles */
 	#action-container {
@@ -224,16 +250,13 @@
 		</div>
 	  </div>
 	  <div id="question-container">
-		<img id="image" src="https://via.placeholder.com/400x300" alt="Paris">
+		<img id="image" src="https://via.placeholder.com/1000x1200" alt="Paris">
 	  </div>
 	  <div id="choices-container">
 		<button class="choice-btn">London</button>
 		<button class="choice-btn">Paris</button>
 		<button class="choice-btn">New York</button>
 		<button class="choice-btn">Tokyo</button>
-	  </div>
-	  <div id="progress-bar-container">
-		<div id="progress-bar"></div>
 	  </div>
 	  <div id="action-container">
 		<button id="next-btn" class="btn btn-primary hide">Next</button>
