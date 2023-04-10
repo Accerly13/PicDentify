@@ -1,67 +1,263 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <title>Students' Dashboard </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link rel='stylesheet' href="{% static 'img/style.css' %}" type='text/css'>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Student Dashboard</title>
+	<!-- Bootstrap CSS -->
+	<!-- CSS files -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<!-- JavaScript files -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNS3vx" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-12 text-center mb-5">
-                    <img src="{% static 'img/logo.png' %}" width="150" height="150">
-                    <h1 class="mt-3 mb-4">Welcome to PICDENTIFY Grade 3 Students</h1>
+	<!-- Navigation bar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Teacher's Name</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+    <div class="container mt-3 d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 mb-1">
+                <div class="card bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title text-white"><i class="fas fa-rocket"></i> Easy Topic</h5>
+                        <p class="card-text text-white">Title of Topic</p>
+                        <a href="#" class="btn btn-light btn-sm" data-toggle="modal" data-target="#confirmModal"><i class="fas fa-gamepad"></i> Play Now</a>
+                    </div>
                 </div>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-sm-4 mb-4">
-                    <a href="/studentdashboard/studentactivity/" class="btn btn-lg btn-primary btn-block btn-animated btn-gamified" id="easy-btn">
-                        <span class="btn-icon">
-                            <i class="fas fa-rocket"></i>
-                        </span>
-                        <span class="btn-text">Easy Peasy!</span>
-                        <div class="btn-hover">
-                            <i class="fas fa-play-circle"></i>
-                            <span class="btn-hover-text">Let's Go!</span>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmModalLabel"></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
-                    </a>
+                        <div class="modal-body">
+                            Are you sure you want to play this game?
+                        </div>
+                        <div class="modal-footer">
+                            <a href="/studentdashboard/studentactivity/" class="btn btn-primary">Yes, Play Now</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-4 mb-4">
-                    <a href="#" class="btn btn-lg btn-warning btn-block btn-animated btn-gamified" id="medium-btn">
-                        <span class="btn-icon">
-                            <i class="fas fa-graduation-cap"></i>
-                        </span>
-                        <span class="btn-text">Mega Medium!</span>
-                        <div class="btn-hover">
-                            <i class="fas fa-play-circle"></i>
-                            <span class="btn-hover-text">Let's Go!</span>
-                        </div>
-                    </a>
+            </div>
+            
+            <div class="col-md-6 col-lg-4 mb-1">
+                <div class="card bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title text-white"><i class="fas fa-chess-knight"></i> Medium Topic</h5>
+                        <p class="card-text text-white">Title of Topic</p>
+                        <a href="#" class="btn btn-light btn-sm"><i class="fas fa-gamepad"></i> Play Now</a>
+                    </div>
                 </div>
-                <div class="col-sm-4 mb-4">
-                    <a href="#" class="btn btn-lg btn-danger btn-block btn-animated btn-gamified" id="hard-btn">
-                        <span class="btn-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </span>
-                        <span class="btn-text">Ultra Hard!</span>
-                        <div class="btn-hover">
-                            <i class="fas fa-play-circle"></i>
-                            <span class="btn-hover-text">Let's Go!</span>
-                        </div>
-                    </a>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-1">
+                <div class="card bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title text-white"><i class="fas fa-bomb"></i> Hard Topic</h5>
+                        <p class="card-text text-white">Title of Topic</p>
+                        <a href="#" class="btn btn-light btn-sm"><i class="fas fa-gamepad"></i> Play Now</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-    <script src="script.js"></script>
+    
 </body>
 </html>
+
+<style>
+/* Change the background color of the modal header and footer */
+.modal-header, .modal-footer {
+  background-color: #f8f9fa;
+}
+
+.modal-dialog {
+  max-width: 800px; /* Adjust this value as needed */
+}
+
+.modal-content {
+  padding: 20px;
+}
+
+
+/* Center the text in the modal header */
+.modal-header h5 {
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Change the color of the modal body text */
+.modal-body {
+  color: #212529;
+}
+
+/* Add padding to the modal body */
+.modal-body {
+  padding: 20px;
+}
+
+/* Change the color of the "Cancel" button */
+.modal-footer .btn-secondary {
+  color: #6c757d;
+  background-color: #f8f9fa;
+}
+
+/* Change the color of the "Yes, Play Now" button */
+.modal-footer .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* Change the color of the "Yes, Play Now" button when hovered */
+.modal-footer .btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+
+.card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    max-width: 100%;
+}
+
+.card:before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background-image: linear-gradient(45deg, #fd297b, #ff5864, #ff655b);
+    z-index: -1;
+}
+
+.card:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    z-index: -1;
+}
+
+.card:hover:after {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 1;
+}
+
+.card-body {
+    width: 300px; /* Change this to the desired width */
+    height: 250px; /* Change this to the desired height */
+    overflow: hidden;
+    position: relative;
+}
+
+.card-title {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.card-title i {
+    font-size: 40px;
+    margin-right: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.card-text {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    bottom: 10px; /* Change this to the desired distance from the bottom */
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+.navbar {
+  background-color: #f8f9fa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  font-family: 'Open Sans', sans-serif;
+}
+
+.navbar-brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  text-transform: uppercase;
+}
+
+.nav-link {
+  font-size: 18px;
+  color: #6c757d;
+}
+
+.navbar-nav .nav-link {
+  padding: 10px 15px;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #007bff;
+}
+
+.navbar-toggler {
+  border: none;
+  background-color: transparent;
+}
+
+.navbar-toggler:focus {
+  outline: none;
+}
+
+
+</style>
+
+<script>
+	
+</script>
