@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from .models import AdminUser, AdminKey
+from .models import AdminUser, AdminKey, Topics, Difficulty
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -123,7 +123,16 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         for i in range(1, int(request.POST['num_words']) + 1):
             word_list.append(request.POST['word'+str(i)])
         if '' not in word_list:
-            print(word_list)
+            try:
+                Topics.objects.get(topic_name=request.POST['newtopic'])
+            except:
+                user = AdminUser.objects.get(username=request.session.get('username'))
+                topics = Topics.objects.all()
+                topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['newtopic'], owner_id=user.admin_id)
+                topic.save()
+                difficulty = Difficulty.objects.all()
+                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'], words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'])
+
         return render(request, 'teacherDashboard.html')
 
 class StudentDashboard(TemplateView):

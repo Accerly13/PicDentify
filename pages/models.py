@@ -56,6 +56,7 @@ class Difficulty(models.Model):
     difficulty_name = models.CharField(max_length=20, verbose_name='difficulty')
     words = models.JSONField()
     topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    time_limit = models.IntegerField(blank=False, null=False)
     class Meta:
         db_table = "difficulty"
 
