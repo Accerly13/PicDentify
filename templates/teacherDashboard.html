@@ -206,7 +206,7 @@ footer {
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+ 
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -344,22 +344,21 @@ footer {
     </div>
 
     <div class="container">
+      <form method="POST" id="number-of-words">
+        {% csrf_token %}
         <div class="row">
-			
             <div class="col-md-6 mx-auto mb-2">
               <div class="form-container">
                   <div class="form-group form-group-icon">
                     <label for="num_words"><i class="fas fa-pencil-alt icon"></i>Number of Words:</label>
                     <input type="number" class="form-control" id="num_words" name="num_words">
                   </div>
-                  <div id="words_container"></div>
-              </div>
+                   <div id="words_container"></div>
+              </div>      
             </div>
 			
           <div class="col-md-6 mx-auto">
               <div class="form-container">
-
-                <form action="" method="POST" enctype="multipart/form-data">
                   <div class="form-group form-group-icon">
                       <label for="difficulty"><i class="fas fa-star icon"></i>Difficulty Level:</label>
                       <select class="form-control" id="difficulty" name="difficulty">
@@ -388,11 +387,9 @@ footer {
                   <div class="form-group form-group-icon">
                     <label for="time_limit"><i class="far fa-clock icon"></i>Time Limit (Every Question):</label>
                     <div class="input-group">
-                      <input type="number" class="form-control" id="time_limit" name="time_limit" min="1" max="60">
+                      <input type="number" class="form-control" id="time_limit" name="time_limit" min="1" max="20">
                     </div>
                   </div>
-                  
-                </form>
             </div>
 
             <div style="text-align:center; margin: 1rem;">
@@ -400,7 +397,7 @@ footer {
             </div>
             
             <!-- Modal -->
-            <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal" id="confirmModal" tabindex="1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -414,13 +411,14 @@ footer {
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button onclick="saveGame()" class="btn btn-primary">Create</button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        </form>
         
     </div>
 
@@ -453,9 +451,8 @@ footer {
     var modal = document.getElementById("myTeacherKeyModal");
     function showPopUp() {
       modal.style.display = "block";
-      
     }
-            $(document).ready(function() {
+    $(document).ready(function() {
         $('#topic').change(function() {
             if ($(this).val() == 'addnew') { // if "add new" is selected
                 $('#addnewinput').show(); // show the input field
@@ -487,37 +484,48 @@ footer {
     }
 
     const wordsContainer = document.getElementById('words_container');
-  const numWordsInput = document.getElementById('num_words');
+    const numWordsInput = document.getElementById('num_words');
 
-  numWordsInput.addEventListener('change', () => {
-    const numWords = numWordsInput.value;
+    numWordsInput.addEventListener('change', () => {
+      const numWords = numWordsInput.value;
 
-    // Clear the container
-    wordsContainer.innerHTML = '';
+      // Clear the container
+      wordsContainer.innerHTML = '';
+      // Generate input fields
+      for (let i = 1; i <= numWords; i++) {
+        const inputId = `word${i}`;
+        const label = `Word ${i}:`;
 
-    // Generate input fields
-    for (let i = 1; i <= numWords; i++) {
-      const inputId = `word${i}`;
-      const label = `Word ${i}:`;
+        const inputContainer = document.createElement('div');
+        inputContainer.className = 'form-group form-group-icon';
 
-      const inputContainer = document.createElement('div');
-      inputContainer.className = 'form-group form-group-icon';
+        const inputLabel = document.createElement('label');
+        inputLabel.htmlFor = inputId;
+        inputLabel.innerHTML = `<i class="fas fa-pencil-alt icon"></i>${label}`;
 
-      const inputLabel = document.createElement('label');
-      inputLabel.htmlFor = inputId;
-      inputLabel.innerHTML = `<i class="fas fa-pencil-alt icon"></i>${label}`;
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.className = 'form-control';
+        inputField.id = inputId;
+        inputField.name = inputId;
 
-      const inputField = document.createElement('input');
-      inputField.type = 'text';
-      inputField.className = 'form-control';
-      inputField.id = inputId;
-      inputField.name = inputId;
+        inputContainer.appendChild(inputLabel);
+        inputContainer.appendChild(inputField);
+        wordsContainer.appendChild(inputContainer);
+      }
+    });
 
-      inputContainer.appendChild(inputLabel);
-      inputContainer.appendChild(inputField);
-      wordsContainer.appendChild(inputContainer);
-    }
-  });
+  function saveGame() {
+    event.preventDefault();
+    var myForm = document.querySelector('#number-of-words');
+    var formData = new FormData(myForm);
+			fetch('/dashboard/', {
+				method: 'POST',
+				body: formData
+			})
+  }
+  
+    // Do something with the form data
     </script>
 </body>
 </html>

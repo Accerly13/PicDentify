@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 import random
 import string
+import requests
 from google_images_search import GoogleImagesSearch
 
 @login_required
@@ -102,6 +103,28 @@ class Dashboard(LoginRequiredMixin, TemplateView):
     def get(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
         return render(request, 'teacherDashboard.html', {'user_key':user.user_key})
+    
+    def post(self, request):
+        def fetch_image(query):
+            url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
+            # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
+            response = requests.get(url)
+            image_urls = []
+            if response.status_code == 200:
+                data = response.json()
+                for image_data in data:
+                    image_url = image_data['urls']['regular']
+                    image_urls.append(image_url)
+                return image_urls
+            else:
+                return HttpResponse('Error fetching image')
+            
+        word_list = []
+        for i in range(1, int(request.POST['num_words']) + 1):
+            word_list.append(request.POST['word'+str(i)])
+        if '' not in word_list:
+            print(word_list)
+        return render(request, 'teacherDashboard.html')
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
