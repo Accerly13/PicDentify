@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views.generic import TemplateView
 from .models import AdminUser, AdminKey, Topics, Difficulty
 from django.contrib import messages
@@ -131,7 +131,8 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 topic.save()
                 difficulty = Difficulty.objects.all()
                 Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                          words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'])
+                                          words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
+                                          points_per_question=request.POST['points_per_question'])
 
         return render(request, 'teacherDashboard.html')
 
@@ -146,9 +147,25 @@ class StudentDashboard(TemplateView):
         except:
 
             return redirect('/studentlogin/')
+        
+    def post(self, request):
+        if request.POST.get('difficulty') == 'easy':
+            try:
+                questions = Difficulty.objects.get(difficulty_name='easy', topic_id=request.POST.get('topic_id'))
+                print(questions)
+                return redirect('/studentdashboard/studentactivity/')
+            except: 
+                return redirect('/studentdashboard/')
+           
+    
 
 class StudentActivity(TemplateView):
     template_name = 'studentActivity.html'
+
+    def get(self, request):
+        print("dipota")
+        return redirect('/studentdashboard/studentactivity/')
+
     
 
 class StudentLogin(TemplateView):

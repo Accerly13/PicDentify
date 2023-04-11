@@ -45,16 +45,19 @@
               <p>Choose your level of difficulty:</p>
               <div class="difficulty">
                 <div class="level easy">
-                  <a>Easy</a>
-                  <input hidden value="easy" name="easy">
+                  <a id="easy{{item.topic_id}}">Easy</a>
+                  <form id="ez{{item.topic_id}}"> 
+                    {% csrf_token %}
+                    <input hidden value="easy" name="easy{{item.topic_id}}">
+                  </form>
                 </div>
                 <div class="level medium">
                   <a>Medium</a>
-                  <input hidden value="medium">
+                  <input hidden value="medium" name="medium{{item.topic_id}}">
                 </div>
                 <div class="level hard">
-                  <a>Hard</a>
-                  <input hidden value="difficult">
+                  <a>Difficult</a>
+                  <input hidden value="difficult" name="difficult{{item.topic_id}}">
                 </div>
               </div>
             </div>
@@ -274,5 +277,22 @@ ul li a:hover {
 </style>
 
 <script>
+   document.addEventListener("DOMContentLoaded", function() {
+      document.querySelectorAll("[id^='easy']").forEach(function(el) {
+          // Add an event listener to each element
+          el.addEventListener("click", function(event) {
+            stringReplace = el.id.replace("easy", "")
+            event.preventDefault();
+            var myForm = document.querySelector("#ez"+stringReplace);
+            var formData = new FormData(myForm);
+            formData.append('difficulty', 'easy');
+            formData.append('topic_id', stringReplace);
+            fetch('/studentdashboard/', {
+              method: 'POST',
+              body: formData
+            })
+      });
+    });
+  })
 	
 </script>

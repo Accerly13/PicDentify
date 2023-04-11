@@ -371,7 +371,7 @@ footer {
                   <select class="form-control" id="difficulty" name="difficulty">
                       <option value="easy">Easy</option>
                       <option value="medium">Medium</option>
-                      <option value="hard">Hard</option>
+                      <option value="difficult">Difficult</option>
                   </select>
               </div>
               <div class="form-group form-group-icon">
@@ -388,24 +388,9 @@ footer {
               
               <div class="form-group form-group-icon">
                   <label for="points_per_question"><i class="fas fa-star icon"></i>Points per Question:</label>
-                  <select class="form-control" id="points_per_question" name="points_per_question">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                  </select>
-              </div>
-              
-              <div class="form-group form-group-icon">
-                  <label for="max_points"><i class="fas fa-star icon"></i>Max Points:</label>
-                  <select class="form-control" id="max_points" name="max_points">
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="30">30</option>
-                      <option value="40">40</option>
-                      <option value="50">50</option>
-                  </select>
+                  <div class="input-group">
+                    <input type="number" class="form-control" id="time_limit" name="points_per_question">
+                </div>
               </div>
           </div>
           
