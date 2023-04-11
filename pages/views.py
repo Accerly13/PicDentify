@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
+from django.core.cache import cache
 import random
 import string
 import requests
@@ -174,13 +175,25 @@ class StudentActivity(TemplateView):
                 return image_urls
             else:
                 return HttpResponse('Error fetching image')
-            
+        
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         words = questions.words.split(',')
-        image_url = fetch_image(words[1])
+
+        persistent_variable = cache.get('my_persistent_variable')
+
+        # If the persistent variable doesn't exist yet, initialize it
+        if persistent_variable is None or persistent_variable == len(words):
+            persistent_variable = 0
+            cache.set('my_persistent_variable', persistent_variable)
+
+        # Increment the persistent variable
+        persistent_variable += 1
+        cache.set('my_persistent_variable', persistent_variable)
+            
+        image_url = fetch_image(words[persistent_variable-1])
         random_number = random.randint(0, 9)
-        return render(request, 'studentActivity.html', {'questions':questions, 'words': words, 'start_index':1, 'img_url':image_url[random_number]})
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number]})
        
 
 
