@@ -162,6 +162,15 @@ class StudentDashboard(TemplateView):
 class StudentActivity(TemplateView):
 
     def get(self, request):
+        def fetch_words():
+            response = requests.get('https://random-word-api.herokuapp.com/word')
+            if response.status_code == 200:
+                word = response.json()[0]
+                print(word)
+                return word
+            else:
+                print('Error fetching word')
+
         def fetch_image(query):
             url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
             # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
@@ -192,8 +201,13 @@ class StudentActivity(TemplateView):
         cache.set('my_persistent_variable', persistent_variable)
             
         image_url = fetch_image(words[persistent_variable-1])
+        choices = []
+        for i in range(3):
+            choices.append(fetch_words())
+        choices.append(words[persistent_variable-1])
+        random.shuffle(choices)
         random_number = random.randint(0, 9)
-        return render(request, 'studentActivity.html', {'questions':questions, 'words': words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number]})
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
        
 
 
