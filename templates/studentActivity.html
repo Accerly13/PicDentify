@@ -263,7 +263,7 @@
 		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">Question {{start_index}} of {{words|length}}</p>
+		<p id="question-counter">Question {{start_index}} of {{length}}</p>
 		<div id="timer-container">
 		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
 		  <div id="time-bar"></div>
@@ -273,10 +273,10 @@
 		<img id="image" src={{img_url}} alt="Paris">
 	  </div>
 	  <div id="choices-container">
-		<button class="choice-btn">London</button>
-		<button class="choice-btn">{{words}}</button>
-		<button class="choice-btn">New York</button>
-		<button class="choice-btn">Tokyo</button>
+		{% for choice in choices %}
+		<button class="choice-btn">{{choice}}</button>
+		{% endfor %}
+		
 	  </div>
 	  <div id="action-container">
 		<button id="next-btn" class="btn btn-primary hide">Next</button>
