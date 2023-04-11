@@ -152,19 +152,37 @@ class StudentDashboard(TemplateView):
         if request.POST.get('difficulty') == 'easy':
             try:
                 questions = Difficulty.objects.get(difficulty_name='easy', topic_id=request.POST.get('topic_id'))
-                print(questions)
-                return redirect('/studentdashboard/studentactivity/')
+                return JsonResponse({'questions': questions.difficulty_id})
             except: 
                 return redirect('/studentdashboard/')
            
     
 
 class StudentActivity(TemplateView):
-    template_name = 'studentActivity.html'
 
     def get(self, request):
-        print("dipota")
-        return redirect('/studentdashboard/studentactivity/')
+        def fetch_image(query):
+            url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
+            # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
+            response = requests.get(url)
+            image_urls = []
+            if response.status_code == 200:
+                data = response.json()
+                for image_data in data:
+                    image_url = image_data['urls']['regular']
+                    image_urls.append(image_url)
+                return image_urls
+            else:
+                return HttpResponse('Error fetching image')
+            
+        csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
+        questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+        words = questions.words.split(',')
+        image_url = fetch_image(words[1])
+        random_number = random.randint(0, 9)
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': words, 'start_index':1, 'img_url':image_url[random_number]})
+       
+
 
     
 

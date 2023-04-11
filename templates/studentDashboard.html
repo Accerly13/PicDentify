@@ -289,9 +289,14 @@ ul li a:hover {
             fetch('/studentdashboard/', {
               method: 'POST',
               body: formData
+            }).then(response => response.json())
+            .then(data => {
+              document.cookie = data.questions
+              window.location.href = window.location.origin + "/studentdashboard/studentactivity"
+             
             })
-      });
-    });
-  })
+        });
+      })
+   })
 	
 </script>

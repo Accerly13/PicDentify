@@ -24,11 +24,11 @@
 		position: relative;
 	}
 
-	#level-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.5rem;
+#level-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 0.5rem;
 }
 
 #level-container label {
@@ -132,17 +132,17 @@
 
 	/* Choices container styles */
 	#choices-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 50px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  margin-bottom: 1.5rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: center;
+		background-color: #fff;
+		padding: 15px;
+		border-radius: 50px;
+		box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+		margin-bottom: 1.5rem;
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
 
 .choice-btn {
   font-size: 24px;
@@ -178,83 +178,103 @@
 
 	/* Action container styles */
 	#action-container {
-	display: flex;
-	justify-content: flex-end;
-	}
+		display: flex;
+		justify-content: flex-end;
+		}
 
 	#next-btn {
-	padding: 15px;
-	font-size: 18px;
-	font-weight: bold;
-	color: #fff;
-	background-color: #4CAF50;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-	transition: background-color 0.2s ease-in-out;
-	}
+		padding: 15px;
+		font-size: 18px;
+		font-weight: bold;
+		color: #fff;
+		background-color: #4CAF50;
+		border: none;
+		border-radius: 10px;
+		cursor: pointer;
+		transition: background-color 0.2s ease-in-out;
+		}
 
 	#next-btn.hide {
-	display: none;
+		display: none;
 	}
 
 	#next-btn:hover {
-	background-color: #3e8e41;
+		background-color: #3e8e41;
 	}
 
 	/* Responsive styles */
 	@media (max-width: 768px) {
-	.quiz-container {
-	padding: 20px;
+		.quiz-container {
+		padding: 20px;
+		}
+		
+		#level-container label {
+		font-size: 16px;
+		}
+
+		#question-counter {
+		font-size: 16px;
+		}
+
+		#time-remaining {
+		font-size: 16px;
+		}
+
+		#image {
+		max-width: 100%;
+		}
+
+		.choice-btn {
+		font-size: 16px;
+		padding: 10px;
+		}
+
+		#next-btn {
+		font-size: 16px;
+		padding: 10px;
+		}
 	}
-	
-	#level-container label {
-	  font-size: 16px;
+	#popup {
+		display: none;
+		position: fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 400px;
+		height: 200px;
+		background-color: white;
+		border: 1px solid black;
+		padding: 20px;
 	}
 
-	#question-counter {
-	  font-size: 16px;
+	#popup.show {
+		display: block;
 	}
 
-	#time-remaining {
-	  font-size: 16px;
+	#popup button {
+		margin-top: 20px;
 	}
-
-	#image {
-	  max-width: 100%;
-	}
-
-	.choice-btn {
-	  font-size: 16px;
-	  padding: 10px;
-	}
-
-	#next-btn {
-	  font-size: 16px;
-	  padding: 10px;
-	}
-}
     </style>
   </head>
   <body>
 	<div class="quiz-container">
 	  <div id="level-container">
 		<label>Level:</label>
-		<span id="level">Easy</span>
+		<span id="level">{{questions.difficulty_name}}</span>
 	  </div>
 	  <div id="question-info-container">
-		<p id="question-counter">Question 1 of 5</p>
+		<p id="question-counter">Question {{start_index}} of {{words|length}}</p>
 		<div id="timer-container">
-		  <p id="time-remaining">Time remaining: 30 seconds</p>
+		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
 		  <div id="time-bar"></div>
 		</div>
 	  </div>
 	  <div id="question-container">
-		<img id="image" src="https://via.placeholder.com/1000x1200" alt="Paris">
+		<img id="image" src={{img_url}} alt="Paris">
 	  </div>
 	  <div id="choices-container">
 		<button class="choice-btn">London</button>
-		<button class="choice-btn">Paris</button>
+		<button class="choice-btn">{{words.1}}</button>
 		<button class="choice-btn">New York</button>
 		<button class="choice-btn">Tokyo</button>
 	  </div>
@@ -264,6 +284,26 @@
 	</div>
 
 <script>
+window.addEventListener('load', () => {
+  const popup = document.getElementById('popup');
+  const startButton = document.getElementById('startButton');
+  startButton.addEventListener('click', () => {
+    // do something when the start button is clicked
+	popup.classList.remove('show');
+  });
+
+  popup.classList.add('show');
+});
+const headerValues = document.cookie.split(';');
+const firstValue = headerValues[0].trim();
+
+var myForm = document.querySelector("#startGame");
+var formData = new FormData(myForm);
+formData.append('id', firstValue);
+fetch('/studentdashboard/studentactivity/', {
+	method: 'POST',
+	body: formData
+})
 
 </script>
 </body>
