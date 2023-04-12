@@ -15,6 +15,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-M1GZhkKjJPhzvyvESX9k+OC4A4V7Qih8sO/Gg7Kx+pkT0Tl3qyntvDy9uIR4j4K7VW2c8KVv7RjKxt+dnTFFVg==" crossorigin="anonymous"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-DnmQrq1e5/5w5fZXM5KjxjjN5iNpOvmOa/djK9X6cCiv0hJUq3YoxbNsoP6WeHm6r0r0QjzVEe9R1B2rn+IXeA==" crossorigin="anonymous"></script>
+
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="style.css">
 </head>
@@ -35,6 +41,67 @@
         </div>
       </nav> 
       <div class="container">
+
+        <div class="modal fade" id="easyModal" tabindex="-1" role="dialog" aria-labelledby="easyModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="easyModalLabel">Confirm Easy Level</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to proceed with the easy level?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary" id="easyButton">Proceed</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="mediumModal" tabindex="-1" role="dialog" aria-labelledby="mediumModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="mediumModalLabel">Confirm Medium Level</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to proceed with the medium level?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary" id="mediumButton">Proceed</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="difficultModal" tabindex="-1" role="dialog" aria-labelledby="difficultModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="difficultModalLabel">Confirm Difficult Level</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to proceed with the difficult level?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-primary" id="difficultButton">Proceed</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="row">
           {% for item in topics %}
           <div class="col-sm-4 mb-4">
@@ -44,7 +111,7 @@
               <div class="row">
                 <div class="col-4">
                   <div class="level easy">
-                    <a id="easy{{item.topic_id}}">Easy</a>
+                    <a id="easy{{item.topic_id}}" class="level-button" onclick="confirmLevel('easy{{item.topic_id}}')">Easy</a>
                     <form id="ez{{item.topic_id}}"> 
                       {% csrf_token %}
                       <input hidden value="easy" name="easy{{item.topic_id}}">
@@ -53,13 +120,13 @@
                 </div>
                 <div class="col-4">
                   <div class="level medium">
-                    <a>Medium</a>
+                    <a class="level-button" onclick="confirmLevel('medium{{item.topic_id}}')">Medium</a>
                     <input hidden value="medium" name="medium{{item.topic_id}}">
                   </div>
                 </div>
                 <div class="col-4">
                   <div class="level hard">
-                    <a>Difficult</a>
+                    <a class="level-button" onclick="confirmLevel('difficult{{item.topic_id}}')">Difficult</a>
                     <input hidden value="difficult" name="difficult{{item.topic_id}}">
                   </div>
                 </div>
@@ -69,12 +136,31 @@
           {% endfor %}
         </div>
       </div>
+
+      
       
       
 </body>
 </html>
 
 <style>
+.level-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #ccc;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.level-button:hover {
+  background-color: #aaa;
+}
+
+
 html, body {
   height: 100%;
 }
@@ -86,6 +172,11 @@ html, body {
 
 .row {
   margin-top: 20px;
+}
+
+.col-4{
+  padding: 0%;
+  
 }
 
 .col-sm-4 {
@@ -272,61 +363,12 @@ h2 span:hover::before {
 
 .box .medium a {
   border: 2px solid #f0ad4e;
+  padding: 10px; 
 }
 
 .box .hard a {
   border: 2px solid #d9534f;
-}
-
-
-.difficulty {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.difficulty .level {
-  margin: 0 20px;
-}
-
-.difficulty .level a {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  background-image: linear-gradient(to bottom, #007bff, #0056b3);
-}
-
-.difficulty .level a:hover {
-  background-color: #0056b3;
-  background-image: none;
-}
-
-.difficulty .level .easy {
-  border-color: #5cb85c;
-}
-
-.difficulty .level .medium {
-  border-color: #f0ad4e;
-}
-
-.difficulty .level .hard {
-  border-color: #d9534f;
-}
-
-.difficulty .level .easy a {
-  border: 2px solid;
-}
-
-.difficulty .level .medium a {
-  border: 2px solid;
-}
-
-.difficulty .level .hard a {
-  border: 2px solid;
+  padding: 10px;
 }
 
 .navbar {
@@ -364,10 +406,96 @@ h2 span:hover::before {
   outline: none;
 }
 
+/* Style the modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-header {
+  background-color: #343a40;
+  color: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.modal-body {
+  font-size: 1.1rem;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
 
 </style>
 
 <script>
+
+// Get the modal elements
+var easyModal = document.getElementById("easyModal");
+var mediumModal = document.getElementById("mediumModal");
+var difficultModal = document.getElementById("difficultModal");
+
+// Get the buttons that open the modal
+var easyButton = document.getElementById("easyButton");
+var mediumButton = document.getElementById("mediumButton");
+var difficultButton = document.getElementById("difficultButton");
+
+// When the user clicks the easy button, open the easy modal
+easyButton.onclick = function() {
+  easyModal.style.display = "block";
+}
+
+// When the user clicks the medium button, open the medium modal
+mediumButton.onclick = function() {
+  mediumModal.style.display = "block";
+}
+
+// When the user clicks the difficult button, open the difficult modal
+difficultButton.onclick = function() {
+  difficultModal.style.display = "block";
+}
+
+// When the user clicks the close button or anywhere outside of the modal, close the modal
+window.onclick = function(event) {
+  if (event.target == easyModal || event.target == mediumModal || event.target == difficultModal) {
+    easyModal.style.display = "none";
+    mediumModal.style.display = "none";
+    difficultModal.style.display = "none";
+  }
+}
+
+
    document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll("[id^='easy']").forEach(function(el) {
           // Add an event listener to each element
