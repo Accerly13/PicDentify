@@ -99,7 +99,6 @@
   height: 100%;
   background-color: #4B0082;
   border-radius: 5px;
-  animation: timer-animation 30s linear forwards;
 }
 
 @keyframes timer-animation {
@@ -266,11 +265,11 @@
 		<p id="question-counter">Question {{start_index}} of {{length}}</p>
 		<div id="timer-container">
 		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
-		  <div id="time-bar"></div>
+		  <div id="time-bar" style="animation:timer-animation {{questions.time_limit}}s linear forwards;"></div>
 		</div>
 	  </div>
 	  <div id="question-container">
-		<img id="image" src={{img_url}} alt="Paris">
+		<img id="image" src={{img_url}}>
 	  </div>
 	  <div id="choices-container">
 		{% for choice in choices %}
