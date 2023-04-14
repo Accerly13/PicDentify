@@ -156,6 +156,19 @@ class StudentDashboard(TemplateView):
                 return JsonResponse({'questions': questions.difficulty_id})
             except: 
                 return redirect('/studentdashboard/')
+        elif request.POST.get('difficulty') == 'medium':
+            try:
+                questions = Difficulty.objects.get(difficulty_name='medium', topic_id=request.POST.get('topic_id'))
+                return JsonResponse({'questions': questions.difficulty_id})
+            except: 
+                return redirect('/studentdashboard/')
+        else:
+            try:
+                questions = Difficulty.objects.get(difficulty_name='difficult', topic_id=request.POST.get('topic_id'))
+                return JsonResponse({'questions': questions.difficulty_id})
+            except: 
+                return redirect('/studentdashboard/')
+
            
     
 
@@ -166,7 +179,6 @@ class StudentActivity(TemplateView):
             response = requests.get('https://random-word-api.herokuapp.com/word')
             if response.status_code == 200:
                 word = response.json()[0]
-                print(word)
                 return word
             else:
                 print('Error fetching word')
@@ -209,10 +221,6 @@ class StudentActivity(TemplateView):
         random_number = random.randint(0, 9)
         return render(request, 'studentActivity.html', {'questions':questions, 'words': words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
        
-
-
-    
-
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'
 
