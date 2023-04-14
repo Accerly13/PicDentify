@@ -375,9 +375,24 @@ footer {
                   </select>
               </div>
               <div class="form-group form-group-icon">
-                  <label for="newtopic"><i class="fas fa-plus icon"></i>Add a Topic:</label>
-                  <input type="text" class="form-control" id="newtopic" name="newtopic">
-              </div>
+                <label for="topic"><i class="fas fa-list icon"></i>Select or Add a Topic:</label>
+                <div class="input-group">
+                    <select class="form-control" id="topic" name="topic">
+                        <option value="" selected>-- Select a Topic --</option>
+                        <option value="topic1">Synonym</option>
+                        <option value="topic2">Antonym</option>
+                        <option value="topic3">Homonym</option>
+                        <option value="topic3">Geograph</option>
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="addTopicBtn">Add New</button>
+                    </div>
+                </div>
+                <div class="form-group form-group-icon d-none" id="newTopicGroup">
+                    <label for="newTopic"><i class="fas fa-plus icon"></i>Add a New Topic:</label>
+                    <input type="text" class="form-control" id="newTopic" name="newTopic">
+                </div>
+            </div>
           
               <div class="form-group form-group-icon">
                   <label for="time_limit"><i class="far fa-clock icon"></i>Time Limit (Every Question):</label>
@@ -445,6 +460,20 @@ footer {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
+
+    // add click event listener to the "Add New" button
+    document.getElementById("addTopicBtn").addEventListener("click", function() {
+        // show the input field for adding a new topic
+        document.getElementById("newTopicGroup").classList.remove("d-none");
+        // clear the select element's selected option
+        document.getElementById("topic").selectedIndex = 0;
+    });
+    
+    // add change event listener to the select element
+    document.getElementById("topic").addEventListener("change", function() {
+        // hide the input field for adding a new topic if it's visible
+        document.getElementById("newTopicGroup").classList.add("d-none");
+    });
 
   function closeModal() {
     var modal = document.querySelector('.modal');
