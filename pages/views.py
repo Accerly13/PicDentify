@@ -117,7 +117,6 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                 Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
                                           words=', '.join(word_list), topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
                                           points_per_question=request.POST['points_per_question'])
-
             except:
                 topics = Topics.objects.all()
                 topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
@@ -192,6 +191,8 @@ class StudentActivity(TemplateView):
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
         words = questions.words.split(',')
 
+        cleaned_words = [word.strip() for word in words]
+
         persistent_variable = cache.get('my_persistent_variable')
 
         # If the persistent variable doesn't exist yet, initialize it
@@ -203,14 +204,31 @@ class StudentActivity(TemplateView):
         persistent_variable += 1
         cache.set('my_persistent_variable', persistent_variable)
             
-        image_url = fetch_image(words[persistent_variable-1])
+        image_url = fetch_image(cleaned_words[persistent_variable-1])
         choices = []
         for i in range(3):
             choices.append(fetch_words(questions.difficulty_name))
-        choices.append(words[persistent_variable-1])
+        choices.append(cleaned_words[persistent_variable-1])
         random.shuffle(choices)
         random_number = random.randint(0, 9)
-        return render(request, 'studentActivity.html', {'questions':questions, 'words': words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
+    def post(self, request):
+        if request.POST.get('choice'):
+            csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            words = questions.words.split(',')
+
+            cleaned_words = [word.strip() for word in words]
+
+            if request.POST.get('choice') not in cleaned_words:
+                return JsonResponse({'answerVerify': False})
+            else:
+                return JsonResponse({'answerVerify': True})
+
+
+
+
+
        
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'

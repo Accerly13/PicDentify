@@ -272,9 +272,12 @@
 		<img id="image" src={{img_url}}>
 	  </div>
 	  <div id="choices-container">
-		{% for choice in choices %}
-		<button class="choice-btn">{{choice}}</button>
-		{% endfor %}
+		<form id="checkAnswer"> 
+			{% csrf_token %}
+			{% for choice in choices %}
+				<button class="choice-btn" value="{{choice}}">{{choice}}</button>
+			{% endfor %}
+		</form>
 		
 	  </div>
 	  <div id="action-container">
@@ -283,26 +286,61 @@
 	</div>
 
 <script>
-window.addEventListener('load', () => {
-  const popup = document.getElementById('popup');
-  const startButton = document.getElementById('startButton');
-  startButton.addEventListener('click', () => {
-    // do something when the start button is clicked
-	popup.classList.remove('show');
-  });
+// window.addEventListener('load', () => {
+//   const popup = document.getElementById('popup');
+//   const startButton = document.getElementById('startButton');
+//   startButton.addEventListener('click', () => {
+//     // do something when the start button is clicked
+// 	popup.classList.remove('show');
+//   });
 
-  popup.classList.add('show');
-});
-const headerValues = document.cookie.split(';');
-const firstValue = headerValues[0].trim();
+//   popup.classList.add('show');
+// });
+// const headerValues = document.cookie.split(';');
+// const firstValue = headerValues[0].trim();
 
-var myForm = document.querySelector("#startGame");
-var formData = new FormData(myForm);
-formData.append('id', firstValue);
-fetch('/studentdashboard/studentactivity/', {
-	method: 'POST',
-	body: formData
-})
+// var myForm = document.querySelector("#startGame");
+// var formData = new FormData(myForm);
+// formData.append('id', firstValue);
+// fetch('/studentdashboard/studentactivity/', {
+// 	method: 'POST',
+// 	body: formData
+// })
+
+// Get the button element
+// Get the container element
+var container = document.getElementById('choices-container');
+
+// Add event listeners to each button in the container
+var buttons = container.querySelectorAll('.choice-btn');
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', function() {
+        // Retrieve the value of the clicked button
+        var value = this.value;
+        
+		var myForm = document.querySelector("#checkAnswer");
+		var formData = new FormData(myForm);
+		formData.append("choice", value)
+		fetch('/studentdashboard/studentactivity/', {
+			method: 'POST',
+			body: formData
+		}).then(response => response.json())
+			.then(data => {
+				var jsResponse = data.answerVerify;
+				if (jsResponse) {
+					alert("Correct!")
+					window.location.reload()
+				}
+				else {
+					alert("Wrong!")
+					window.location.reload()
+				}
+			});
+        // Do something with the value (e.g. send it to the server)
+    });
+}
+
+
 
 </script>
 </body>
