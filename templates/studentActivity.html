@@ -346,7 +346,7 @@
 		</div>
 	  </div>
 	  <div id="question-container">
-		{% if img_url != "" %}
+		{% if img_url != "no image" %}
 			<img id="image" src={{img_url}}>
 		{% else %}
 			<img id="image" src="{% static 'img/no_internet.png' %}">
