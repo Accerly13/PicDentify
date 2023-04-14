@@ -166,7 +166,7 @@ class StudentDashboard(TemplateView):
 class StudentActivity(TemplateView):
 
     def get(self, request):
-        def fetch_words():
+        def fetch_words(difficulty):
             response = requests.get('https://random-word-api.herokuapp.com/word')
             if response.status_code == 200:
                 word = response.json()[0]
@@ -206,7 +206,7 @@ class StudentActivity(TemplateView):
         image_url = fetch_image(words[persistent_variable-1])
         choices = []
         for i in range(3):
-            choices.append(fetch_words())
+            choices.append(fetch_words(questions.difficulty_name))
         choices.append(words[persistent_variable-1])
         random.shuffle(choices)
         random_number = random.randint(0, 9)
