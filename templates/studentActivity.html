@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+	{% load static %}
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grade 3 Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JK"
       crossorigin="anonymous" />
-    <link rel="stylesheet" href="style.css" />
     <style>
 .modal {
     position: fixed;
@@ -346,7 +346,11 @@
 		</div>
 	  </div>
 	  <div id="question-container">
-		<img id="image" src={{img_url}}>
+		{% if img_url != "" %}
+			<img id="image" src={{img_url}}>
+		{% else %}
+			<img id="image" src="{% static 'img/no_internet.png' %}">
+		{% endif %}
 	  </div>
 	  <div id="choices-container">
 		<form id="checkAnswer"> 
