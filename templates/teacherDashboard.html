@@ -377,12 +377,10 @@ footer {
               <div class="form-group form-group-icon">
                 <label for="topic"><i class="fas fa-list icon"></i>Select or Add a Topic:</label>
                 <div class="input-group">
-                    <select class="form-control" id="topic" name="topic">
-                        <option value="" selected>-- Select a Topic --</option>
-                        <option value="topic1">Synonym</option>
-                        <option value="topic2">Antonym</option>
-                        <option value="topic3">Homonym</option>
-                        <option value="topic3">Geograph</option>
+                    <select class="form-control" id="existingTopic" name="existingTopic">
+                      {% for item in topics %}
+                        <option value={{item.topic_name}} selected> {{item.topic_name}}</option>
+                      {% endfor %}
                     </select>
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="button" id="addTopicBtn">Add New</button>
@@ -466,25 +464,24 @@ footer {
         // show the input field for adding a new topic
         document.getElementById("newTopicGroup").classList.remove("d-none");
         // clear the select element's selected option
-        document.getElementById("topic").selectedIndex = 0;
+        document.getElementById("existingTopic").selectedIndex = 0;
     });
     
     // add change event listener to the select element
-    document.getElementById("topic").addEventListener("change", function() {
+    document.getElementById("existingTopic").addEventListener("change", function() {
         // hide the input field for adding a new topic if it's visible
         document.getElementById("newTopicGroup").classList.add("d-none");
     });
 
-  function closeModal() {
-    var modal = document.querySelector('.modal');
-    modal.style.display = 'none';
-  }
+    function closeModal() {
+      var modal = document.querySelector('.modal');
+      modal.style.display = 'none';
+    }
 
     var modal = document.getElementById("myTeacherKeyModal");
     function showPopUp() {
       modal.style.display = "block";
     }
-
     function CopyUserKey() {
   // Get the user_key element
       var userKeyElem = document.querySelector("#user-key");
@@ -541,7 +538,15 @@ footer {
   function saveGame() {
     event.preventDefault();
     var myForm = document.querySelector('#number-of-words');
+    var topic = ""
+    if (document.getElementById("newTopic").value == "") {
+       topic = document.getElementById("existingTopic").value
+    }
+    else {
+      topic = document.getElementById("newTopic").value
+    }
     var formData = new FormData(myForm);
+    formData.append('addTopic', topic)
 			fetch('/dashboard/', {
 				method: 'POST',
 				body: formData

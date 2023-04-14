@@ -102,35 +102,26 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
-        return render(request, 'teacherDashboard.html', {'user_key':user.user_key})
+        topics = Topics.objects.filter(owner_id=user.admin_id)
+        return render(request, 'teacherDashboard.html', {'user_key':user.user_key, 'topics': topics})
     
     def post(self, request):
-        def fetch_image(query):
-            url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
-            # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
-            response = requests.get(url)
-            image_urls = []
-            if response.status_code == 200:
-                data = response.json()
-                for image_data in data:
-                    image_url = image_data['urls']['regular']
-                    image_urls.append(image_url)
-                return image_urls
-            else:
-                return HttpResponse('Error fetching image')
-            
+        user = AdminUser.objects.get(username=request.session.get('username'))
+        difficulty = Difficulty.objects.all()
         word_list = []
         for i in range(1, int(request.POST['num_words']) + 1):
             word_list.append(request.POST['word'+str(i)])
         if '' not in word_list:
             try:
-                Topics.objects.get(topic_name=request.POST['newtopic'])
+                isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
+                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                          words=', '.join(word_list), topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
+                                          points_per_question=request.POST['points_per_question'])
+
             except:
-                user = AdminUser.objects.get(username=request.session.get('username'))
                 topics = Topics.objects.all()
-                topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['newtopic'], owner_id=user.admin_id)
+                topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
                 topic.save()
-                difficulty = Difficulty.objects.all()
                 Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
                                           words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
                                           points_per_question=request.POST['points_per_question'])
