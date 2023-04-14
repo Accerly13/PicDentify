@@ -7,9 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.core.cache import cache
-import random
-import string
-import requests
+import random, string, requests, json
 from google_images_search import GoogleImagesSearch
 
 @login_required
@@ -307,8 +305,47 @@ class StudentActivity(TemplateView):
                     image_urls.append(image_url)
                 return image_urls
             else:
-                image_urls = ["","","","","","","","","",""]
-                return image_urls
+                url = "https://api.pexels.com/v1/search"
+                querystring = {"query":query,"per_page":"10"}
+
+                headers = {
+                    "Authorization": "RUOSX3w8hIi5FbqexEHY6duj0VCLcQHcnB7ttNQIaVGg3P5G1MGPjtZb"
+                }
+                response = requests.request("GET", url, headers=headers, params=querystring)
+                if response.status_code == 200:
+                    # Convert response to JSON format
+                    response_data = json.loads(response.text)
+                    
+                    # Extract image URLs from JSON response
+                    for photo in response_data['photos']:
+                        image_urls.append(photo['src']['large'])
+                        
+                    return image_urls
+                else: 
+                    url = "https://pixabay.com/api/"
+                    params = {
+                        "key": "35398144-35ce401c80dac5a3a0846c3bd",
+                        "q": query,
+                        "per_page": 10
+                    }
+
+                    # Send GET request to API endpoint
+                    response = requests.get(url, params=params)
+
+                    # Check if API request was successful
+                    if response.status_code == 200:
+                        # Parse JSON response
+                        response_data = response.json()
+                        
+                        # Extract image URLs from response
+                        image_urls = [result["largeImageURL"] for result in response_data["hits"]]
+                        
+                        # Print image URLs
+                        return image_urls
+                    else:
+                        # Print error message if API request failed
+                        image_urls.append("no image")
+                        return image_urls
         
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
@@ -328,12 +365,17 @@ class StudentActivity(TemplateView):
         cache.set('my_persistent_variable', persistent_variable)
             
         image_url = fetch_image(cleaned_words[persistent_variable-1])
+        if (len(image_url) == 0):
+            image_url.append("no image")
         choices = []
         for i in range(3):
             choices.append(fetch_words())
         choices.append(cleaned_words[persistent_variable-1])
         random.shuffle(choices)
-        random_number = random.randint(0, 9)
+        try:
+            random_number = random.randint(0, len(image_url)-1)
+        except:
+            random_number = 0
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
     def post(self, request):
         if request.POST.get('choice'):
