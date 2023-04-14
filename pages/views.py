@@ -159,13 +159,10 @@ class StudentDashboard(TemplateView):
             except: 
                 return redirect('/studentdashboard/')
 
-           
-    
-
 class StudentActivity(TemplateView):
 
     def get(self, request):
-        def fetch_words(difficulty):
+        def fetch_words():
             response = requests.get('https://random-word-api.herokuapp.com/word')
             if response.status_code == 200:
                 word = response.json()[0]
@@ -185,7 +182,8 @@ class StudentActivity(TemplateView):
                     image_urls.append(image_url)
                 return image_urls
             else:
-                return HttpResponse('Error fetching image')
+                image_urls = ["","","","","","","","","",""]
+                return image_urls
         
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
@@ -207,7 +205,7 @@ class StudentActivity(TemplateView):
         image_url = fetch_image(cleaned_words[persistent_variable-1])
         choices = []
         for i in range(3):
-            choices.append(fetch_words(questions.difficulty_name))
+            choices.append(fetch_words())
         choices.append(cleaned_words[persistent_variable-1])
         random.shuffle(choices)
         random_number = random.randint(0, 9)
