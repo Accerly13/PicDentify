@@ -9,6 +9,83 @@
       crossorigin="anonymous" />
     <link rel="stylesheet" href="style.css" />
     <style>
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #F8F8F8;
+    padding: 80px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: pop-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+    transform: translateY(-100px);
+}
+
+.modal-content h2 {
+    font-size: 50px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: slide-in 0.5s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    opacity: 0;
+    transform: translateX(-100px);
+}
+
+.modal-content p {
+    font-size: 28px;
+    color: #777;
+    margin-bottom: 60px;
+    animation: slide-in 0.5s cubic-bezier(0.42, 0, 0.58, 1) forwards;
+    opacity: 0;
+    transform: translateX(100px);
+}
+
+@media only screen and (max-width: 600px) {
+    .modal-content {
+        max-width: 90%;
+    }
+}
+
+@keyframes pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
  /* Main container styles */
 	.quiz-container {
 		max-width: 1200px;
@@ -318,27 +395,33 @@ for (var i = 0; i < buttons.length; i++) {
         // Retrieve the value of the clicked button
         var value = this.value;
         
-		var myForm = document.querySelector("#checkAnswer");
-		var formData = new FormData(myForm);
-		formData.append("choice", value)
-		fetch('/studentdashboard/studentactivity/', {
-			method: 'POST',
-			body: formData
-		}).then(response => response.json())
-			.then(data => {
-				var jsResponse = data.answerVerify;
-				if (jsResponse) {
-					alert("Correct!")
-					window.location.reload()
-				}
-				else {
-					alert("Wrong!")
-					window.location.reload()
-				}
-			});
-        // Do something with the value (e.g. send it to the server)
+        var myForm = document.querySelector("#checkAnswer");
+        var formData = new FormData(myForm);
+        formData.append("choice", value)
+        fetch('/studentdashboard/studentactivity/', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+            .then(data => {
+                var jsResponse = data.answerVerify;
+                var modal = document.createElement('div');
+                modal.classList.add('modal');
+                var modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
+                var resultText = document.createElement('p');
+                if (jsResponse) {
+                    resultText.textContent = "Correct!";
+                }
+                else {
+                    resultText.textContent = "Wrong!";
+                }
+                modalContent.appendChild(resultText);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+            });
     });
 }
+
 
 
 
