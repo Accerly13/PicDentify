@@ -102,6 +102,131 @@ class Dashboard(LoginRequiredMixin, TemplateView):
 
     def get(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
+        def create_topic(topic_name):
+            topics = Topics.objects.all()
+            try:
+                Topics.objects.get(topic_name=topic_name, owner_id=user.admin_id)
+            except:
+                if topic_name == "Synonyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
+                                            points_per_question=10)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
+                                            points_per_question=20)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
+                                            points_per_question=30)
+                            difficulty_save.save()
+
+                elif topic_name == "Antonyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                                words=word_list, topic_id=topic.topic_id, time_limit=10,
+                                                points_per_question=10)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                                words=word_list, topic_id=topic.topic_id, time_limit=12,
+                                                points_per_question=20)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                                words=word_list, topic_id=topic.topic_id, time_limit=15,
+                                                points_per_question=30)
+                            difficulty_save.save()
+                elif topic_name == "Homonyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
+                                            points_per_question=10)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
+                                            points_per_question=20)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
+                                            points_per_question=30)
+                            difficulty_save.save()
+                elif topic_name == "Hyponyms":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
+                                            points_per_question=10)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
+                                            points_per_question=20)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
+                                            points_per_question=30)
+                            difficulty_save.save()
+                elif topic_name == "Homographs":
+                    topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
+                    topic.save()
+                    for i in range(1, 4):
+                        difficulty = Difficulty.objects.all()
+                        if i == 1:
+                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=10,
+                                            points_per_question=10)
+                            difficulty_save.save()
+                        elif i == 2:
+                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=12,
+                                            points_per_question=20)
+                            difficulty_save.save()
+                        elif i == 3:
+                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
+                                            words=word_list, topic_id=topic.topic_id, time_limit=15,
+                                            points_per_question=30)
+                            difficulty_save.save()
+            
+        create_topics = ["Synonyms", "Antonyms", "Homonyms", "Hyponyms", "Homographs"]
+        for topic in create_topics:
+            create_topic(topic)
         topics = Topics.objects.filter(owner_id=user.admin_id)
         return render(request, 'teacherDashboard.html', {'user_key':user.user_key, 'topics': topics})
     
