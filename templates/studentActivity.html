@@ -405,12 +405,57 @@
 
 // Get the button element
 // Get the container element
+
+var questions = {{ questions.time_limit }};
+
+
+
+function onTimeLimitReached() {
+  var myForm = document.querySelector("#checkAnswer");
+        var formData = new FormData(myForm);
+        formData.append("choice", "1")
+        fetch('/studentdashboard/studentactivity/', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.json())
+            .then(data => {
+                var jsResponse = data.answerVerify;
+                var modal = document.createElement('div');
+                modal.classList.add('modal');
+                var modalContent = document.createElement('div');
+                modalContent.classList.add('modal-content');
+                var resultText = document.createElement('p');
+                if (jsResponse) {
+                    resultText.textContent = "Correct!";
+                }
+                else {
+                    resultText.textContent = "Wrong!";
+                }
+                modalContent.appendChild(resultText);
+                modal.appendChild(modalContent);
+                document.body.appendChild(modal);
+                
+                // Code for voice automation
+                if ('speechSynthesis' in window) {
+                    if (jsResponse) {
+                        speak("Congratulations! You got it right");
+                    } else {
+                        speak("Incorrect, You'll get it next time!");
+                    }
+                }
+            });
+}
+
+var timeoutID = setTimeout(onTimeLimitReached, questions * 1000);
+
+
 var container = document.getElementById('choices-container');
 
 // Add event listeners to each button in the container
 var buttons = container.querySelectorAll('.choice-btn');
 for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function() {
+        clearTimeout(timeoutID);
         // Retrieve the value of the clicked button
         var value = this.value;
         
