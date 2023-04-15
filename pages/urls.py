@@ -10,6 +10,7 @@ urlpatterns = [
     path('', views.LoginPage.as_view(), name='login'),
     path('dashboard/', views.Dashboard.as_view(), name='dashboard'),
     path('dashboard', views.Dashboard.as_view(), name='dashboard'),
+    path('dashboard/setting', views.SettingPage.as_view(), name='settingpage'),
     path('studentdashboard/', views.StudentDashboard.as_view(), name='studentdashboard'),
     path('studentdashboard/studentactivity/', views.StudentActivity.as_view(), name='studentactivity'),
     path('studentdashboard/studentactivity', views.StudentActivity.as_view(), name='studentactivity'),
@@ -18,4 +19,5 @@ urlpatterns = [
     path('logout_view', views.logout_view, name='logout_view'),
     path('studentlogin/', views.StudentLogin.as_view(), name='studentlogin'),
     path('studentlogin', views.StudentLogin.as_view(), name='studentlogin'),
+    
 ]

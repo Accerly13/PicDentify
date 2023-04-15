@@ -412,3 +412,7 @@ class StudentLogin(TemplateView):
                 return JsonResponse({'adminKeyVerify': True})
             except:
                 return JsonResponse({'adminKeyVerify': False})
+
+
+class SettingPage(TemplateView):
+    template_name = 'settingPage.html'
