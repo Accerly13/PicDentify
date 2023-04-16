@@ -465,25 +465,27 @@ body {
     <script>
 
     // add click event listener to the "Add New" button
-    document.getElementById("addTopicBtn").addEventListener("click", function() {
-        // show the input field for adding a new topic
-        document.getElementById("newTopicGroup").classList.remove("d-none");
-        // clear the select element's selected option
-        document.getElementById("existingTopic").selectedIndex = 0;
-    });
+    // document.getElementById("addTopicBtn").addEventListener("click", function() {
+    //     // show the input field for adding a new topic
+    //     document.getElementById("newTopicGroup").classList.remove("d-none");
+    //     // clear the select element's selected option
+    //     document.getElementById("existingTopic").selectedIndex = 0;
+    // });
     
-    // add change event listener to the select element
-    document.getElementById("existingTopic").addEventListener("change", function() {
-        // hide the input field for adding a new topic if it's visible
-        document.getElementById("newTopicGroup").classList.add("d-none");
-    });
+    // // add change event listener to the select element
+    // document.getElementById("existingTopic").addEventListener("change", function() {
+    //     // hide the input field for adding a new topic if it's visible
+    //     document.getElementById("newTopicGroup").classList.add("d-none");
+    // });
+    var modal = document.getElementById("myTeacherKeyModal");
+    console.log(modal)
 
     function closeModal() {
       var modal = document.querySelector('.modal');
       modal.style.display = 'none';
     }
 
-    var modal = document.getElementById("myTeacherKeyModal");
+    
     function showPopUp() {
       modal.style.display = "block";
     }
@@ -508,37 +510,37 @@ body {
       copyBtn.disabled = true;
     }
 
-    const wordsContainer = document.getElementById('words_container');
-    const numWordsInput = document.getElementById('num_words');
+    // const wordsContainer = document.getElementById('words_container');
+    // const numWordsInput = document.getElementById('num_words');
 
-    numWordsInput.addEventListener('change', () => {
-      const numWords = numWordsInput.value;
+    // numWordsInput.addEventListener('change', () => {
+    //   const numWords = numWordsInput.value;
 
-      // Clear the container
-      wordsContainer.innerHTML = '';
-      // Generate input fields
-      for (let i = 1; i <= numWords; i++) {
-        const inputId = `word${i}`;
-        const label = `Word ${i}:`;
+    //   // Clear the container
+    //   wordsContainer.innerHTML = '';
+    //   // Generate input fields
+    //   for (let i = 1; i <= numWords; i++) {
+    //     const inputId = `word${i}`;
+    //     const label = `Word ${i}:`;
 
-        const inputContainer = document.createElement('div');
-        inputContainer.className = 'form-group form-group-icon';
+    //     const inputContainer = document.createElement('div');
+    //     inputContainer.className = 'form-group form-group-icon';
 
-        const inputLabel = document.createElement('label');
-        inputLabel.htmlFor = inputId;
-        inputLabel.innerHTML = `<i class="fas fa-pencil-alt icon"></i>${label}`;
+    //     const inputLabel = document.createElement('label');
+    //     inputLabel.htmlFor = inputId;
+    //     inputLabel.innerHTML = `<i class="fas fa-pencil-alt icon"></i>${label}`;
 
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.className = 'form-control';
-        inputField.id = inputId;
-        inputField.name = inputId;
+    //     const inputField = document.createElement('input');
+    //     inputField.type = 'text';
+    //     inputField.className = 'form-control';
+    //     inputField.id = inputId;
+    //     inputField.name = inputId;
 
-        inputContainer.appendChild(inputLabel);
-        inputContainer.appendChild(inputField);
-        wordsContainer.appendChild(inputContainer);
-      }
-    });
+    //     inputContainer.appendChild(inputLabel);
+    //     inputContainer.appendChild(inputField);
+    //     wordsContainer.appendChild(inputContainer);
+    //   }
+    // });
 
   function saveGame() {
     event.preventDefault();
