@@ -5,6 +5,9 @@
 	<meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Grade 3 Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/canvas-confetti.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JK"
       crossorigin="anonymous" />
@@ -382,38 +385,47 @@
 	</div>
 
 <script>
-// window.addEventListener('load', () => {
-//   const popup = document.getElementById('popup');
-//   const startButton = document.getElementById('startButton');
-//   startButton.addEventListener('click', () => {
-//     // do something when the start button is clicked
-// 	popup.classList.remove('show');
-//   });
 
-//   popup.classList.add('show');
-// });
-// const headerValues = document.cookie.split(';');
-// const firstValue = headerValues[0].trim();
-
-// var myForm = document.querySelector("#startGame");
-// var formData = new FormData(myForm);
-// formData.append('id', firstValue);
-// fetch('/studentdashboard/studentactivity/', {
-// 	method: 'POST',
-// 	body: formData
-// })
-
-// Get the button element
-// Get the container element
+// First, create a canvas element to draw the confetti on
+// Helper function to play the sadEmoji sound
+function playSadEmojiSound() {
+  var audio = new Audio("{% static 'incorrect.mp3' %}");
+  audio.play();
+}
 
 var questions = {{ questions.time_limit }};
 
+var topic = "{{ questions.topic.topic_name }}";
 
+const confettiSound = new Audio("{% static 'Confetti.mp3' %}");
+function answerIsCorrect() {
+  confettiSound.play()
+  var duration = 15 * 1000;
+  var animationEnd = Date.now() + duration;
+  var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
+  function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  var interval = setInterval(function() {
+    var timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    var particleCount = 50 * (timeLeft / duration);
+    // since particles fall down, start a bit higher than random
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+    confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+  }, 250);
+}
 function onTimeLimitReached() {
   var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
         formData.append("choice", "1")
+        formData.append("topic", topic)
         fetch('/studentdashboard/studentactivity/', {
             method: 'POST',
             body: formData
@@ -427,26 +439,21 @@ function onTimeLimitReached() {
                 var resultText = document.createElement('p');
                 if (jsResponse) {
                     resultText.textContent = "Correct!";
+                    answerIsCorrect()
                 }
                 else {
-                    resultText.textContent = "Wrong!";
+                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+                    playSadEmojiSound()
                 }
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
                 document.body.appendChild(modal);
                 
-                // Code for voice automation
-                if ('speechSynthesis' in window) {
-                    if (jsResponse) {
-                        speak("Congratulations! You got it right");
-                    } else {
-                        speak("Incorrect, You'll get it next time!");
-                    }
-                }
             });
 }
 
 var timeoutID = setTimeout(onTimeLimitReached, questions * 1000);
+
 
 
 var container = document.getElementById('choices-container');
@@ -461,7 +468,8 @@ for (var i = 0; i < buttons.length; i++) {
         
         var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
-        formData.append("choice", value)
+        formData.append("choice", value),
+        formData.append("topic", topic)
         fetch('/studentdashboard/studentactivity/', {
             method: 'POST',
             body: formData
@@ -474,33 +482,18 @@ for (var i = 0; i < buttons.length; i++) {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
+                    answerIsCorrect()
                     resultText.textContent = "Correct!";
                 }
                 else {
-                    resultText.textContent = "Wrong!";
+                  playSadEmojiSound()
+                    resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
                 }
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
                 document.body.appendChild(modal);
-                
-                // Code for voice automation
-                if ('speechSynthesis' in window) {
-                    if (jsResponse) {
-                        speak("Congratulations! You got it right");
-                    } else {
-                        speak("Incorrect, You'll get it next time!");
-                    }
-                }
             });
     });
-}
-
-function speak(text) {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = 2; // higher pitch
-    utterance.rate = 1.5; // faster rate
-    synth.speak(utterance);
 }
 
 

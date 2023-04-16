@@ -376,24 +376,23 @@ class StudentActivity(TemplateView):
             random_number = random.randint(0, len(image_url)-1)
         except:
             random_number = 0
-        return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable, 'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
+        return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
+                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
     def post(self, request):
         if request.POST.get('choice'):
+            print(request.POST.get('topic'))
+            persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
             questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
             words = questions.words.split(',')
 
             cleaned_words = [word.strip() for word in words]
+            
 
             if request.POST.get('choice') not in cleaned_words:
-                return JsonResponse({'answerVerify': False})
+                return JsonResponse({'answerVerify': False, 'correct_answer':cleaned_words[persistent_variable-1]})
             else:
                 return JsonResponse({'answerVerify': True})
-
-
-
-
-
        
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'
