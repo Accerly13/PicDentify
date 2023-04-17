@@ -231,22 +231,18 @@ class Dashboard(LoginRequiredMixin, TemplateView):
     def post(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
         difficulty = Difficulty.objects.all()
-        word_list = []
-        for i in range(1, int(request.POST['num_words']) + 1):
-            word_list.append(request.POST['word'+str(i)])
-        if '' not in word_list:
-            try:
-                isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
-                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                          words=', '.join(word_list), topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
-                                          points_per_question=request.POST['points_per_question'])
-            except:
-                topics = Topics.objects.all()
-                topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
-                topic.save()
-                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                          words=', '.join(word_list), topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
-                                          points_per_question=request.POST['points_per_question'])
+        try:
+            isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
+            Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                        words=request.POST['words_list'], topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
+                                        points_per_question=request.POST['points_per_question'])
+        except:
+            topics = Topics.objects.all()
+            topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
+            topic.save()
+            Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                        words=request.POST['words_list'], topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
+                                        points_per_question=request.POST['points_per_question'])
 
         return render(request, 'teacherDashboard.html')
 
