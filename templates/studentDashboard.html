@@ -26,20 +26,21 @@
 <body>
 	<!-- Navigation bar -->
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start">
-        <a class="navbar-brand" href="#">Teacher's Name</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="/logout_view"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </li>
-          </ul>
-        </div>
-      </nav> 
-      <div class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+    <a class="navbar-brand" href="#">Teacher's Name</a>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#teacher-modal"><i class="fas fa-chalkboard-teacher"></i> Teacher</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout_view" data-toggle="modal" data-target="#logout-modal"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </li>
+    </ul>
+  </nav>
+
+  
+
+  <div class="container">
       <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">

@@ -240,6 +240,9 @@ body {
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item " style="border-right: 1px solid white;">
+              <a style="color: #fff;" class="nav-link" href="#" data-toggle="modal" data-target="#confirmModal">Student</a>
+          </li>
             <li class="nav-item active" style="border-right: 1px solid white;">
               <a style="color: #fff;" class="nav-link" href="/dashboard">Home</a>
             </li>
@@ -253,7 +256,28 @@ body {
         </div>
       </div>
     </nav>
+
     
+    <!-- Modal for student page-->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="confirmModalLabel">Confirmation</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              Are you sure you want to go to the student page?
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <a href="/studentdashboard" class="btn btn-primary">Go to Student Page</a>
+          </div>
+      </div>
+  </div>
+</div>
     
 <!-- Main Content -->
     <div id="myTeacherKeyModal" class="modal">
