@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, reverse
+from django.core import serializers
 from django.views.generic import TemplateView
 from .models import AdminUser, AdminKey, Topics, Difficulty
 from django.contrib import messages
@@ -8,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.core.cache import cache
 import random, string, requests, json
+from django.forms.models import model_to_dict
 from google_images_search import GoogleImagesSearch
 
 @login_required
@@ -226,25 +228,55 @@ class Dashboard(LoginRequiredMixin, TemplateView):
         for topic in create_topics:
             create_topic(topic)
         topics = Topics.objects.filter(owner_id=user.admin_id)
-        return render(request, 'teacherDashboard.html', {'user_key':user.user_key, 'topics': topics})
+        difficulty = Difficulty.objects.all()
+        return render(request, 'teacherDashboard.html', {'user_key':user.user_key, 'topics': topics, 'difficulty':difficulty})
     
     def post(self, request):
         user = AdminUser.objects.get(username=request.session.get('username'))
         difficulty = Difficulty.objects.all()
-        try:
-            isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
-            Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                        words=request.POST['words_list'], topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
-                                        points_per_question=request.POST['points_per_question'])
-        except:
-            topics = Topics.objects.all()
-            topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
-            topic.save()
-            Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
-                                        words=request.POST['words_list'], topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
-                                        points_per_question=request.POST['points_per_question'])
 
-        return render(request, 'teacherDashboard.html')
+        if request.POST.get('topic_to_edit_samp'):
+            difficulties = Difficulty.objects.filter(topic_id=request.POST['topic_to_edit_samp'])
+            topic = Topics.objects.get(topic_id=request.POST['topic_to_edit_samp'])
+
+            difficulties_data = []
+            for difficulty in difficulties:
+                difficulty_dict = model_to_dict(difficulty)
+                difficulties_data.append(difficulty_dict)
+
+            # Return a JSON response with both the topic and difficulties data
+            return JsonResponse({'topic': topic.topic_name, 'difficulties': difficulties_data})
+
+
+        elif request.POST.get('addTopic'):
+            try:
+                isTopic = Topics.objects.get(topic_name=request.POST['addTopic'])
+                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                            words=request.POST['words_list'], topic_id=isTopic.topic_id, time_limit=request.POST['time_limit'],
+                                            points_per_question=request.POST['points_per_question'])
+            except:
+                topics = Topics.objects.all()
+                topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=request.POST['addTopic'], owner_id=user.admin_id)
+                topic.save()
+                Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name=request.POST['difficulty'],
+                                            words=request.POST['words_list'], topic_id=topic.topic_id, time_limit=request.POST['time_limit'],
+                                            points_per_question=request.POST['points_per_question'])
+
+            return render(request, 'teacherDashboard.html')
+        
+        elif request.POST.get('topicPreviousName'):
+            isTopic = Topics.objects.get(topic_name=request.POST['topicPreviousName'])
+            isTopic.topic_name = request.POST['topicTitle2']
+            isTopic.save()
+            difficulty = Difficulty.objects.get(difficulty_name=request.POST['topicChange'], topic_id=isTopic.topic_id)
+
+            difficulty.words = request.POST['topicWords2']
+            difficulty.points_per_question = request.POST['points_per_question_edit']
+            difficulty.time_limit = request.POST['topicDuration2']
+            difficulty.save()
+    
+
+            return render(request, 'teacherDashboard.html')
 
 class StudentDashboard(TemplateView):
     template_name = 'studentDashboard.html'
