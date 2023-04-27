@@ -419,6 +419,101 @@ class StudentActivity(TemplateView):
                 return JsonResponse({'answerVerify': False, 'correct_answer':cleaned_words[persistent_variable-1]})
             else:
                 return JsonResponse({'answerVerify': True})
+        elif request.POST.get('hidden_value'):
+            def fetch_words():
+                response = requests.get('https://random-word-api.herokuapp.com/word')
+                if response.status_code == 200:
+                    word = response.json()[0]
+                    return word
+                else:
+                    print('Error fetching word')
+
+            def fetch_image(query):
+                url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
+                # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
+                response = requests.get(url)
+                image_urls = []
+                if response.status_code == 200:
+                    data = response.json()
+                    for image_data in data:
+                        image_url = image_data['urls']['regular']
+                        image_urls.append(image_url)
+                    return image_urls
+                else:
+                    url = "https://api.pexels.com/v1/search"
+                    querystring = {"query":query,"per_page":"10"}
+
+                    headers = {
+                        "Authorization": "RUOSX3w8hIi5FbqexEHY6duj0VCLcQHcnB7ttNQIaVGg3P5G1MGPjtZb"
+                    }
+                    response = requests.request("GET", url, headers=headers, params=querystring)
+                    if response.status_code == 200:
+                        # Convert response to JSON format
+                        response_data = json.loads(response.text)
+                        
+                        # Extract image URLs from JSON response
+                        for photo in response_data['photos']:
+                            image_urls.append(photo['src']['large'])
+                            
+                        return image_urls
+                    else: 
+                        url = "https://pixabay.com/api/"
+                        params = {
+                            "key": "35398144-35ce401c80dac5a3a0846c3bd",
+                            "q": query,
+                            "per_page": 10
+                        }
+
+                        # Send GET request to API endpoint
+                        response = requests.get(url, params=params)
+
+                        # Check if API request was successful
+                        if response.status_code == 200:
+                            # Parse JSON response
+                            response_data = response.json()
+                            
+                            # Extract image URLs from response
+                            image_urls = [result["largeImageURL"] for result in response_data["hits"]]
+                            
+                            # Print image URLs
+                            return image_urls
+                        else:
+                            # Print error message if API request failed
+                            image_urls.append("no image")
+                            return image_urls
+            
+            csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
+            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+            words = questions.words.split(',')
+
+            cleaned_words = [word.strip() for word in words]
+
+            persistent_variable = cache.get('my_persistent_variable')
+
+            # If the persistent variable doesn't exist yet, initialize it
+            if persistent_variable is None or persistent_variable == len(words):
+                persistent_variable = 0
+                cache.set('my_persistent_variable', persistent_variable)
+
+            # Increment the persistent variable
+            persistent_variable += 1
+            cache.set('my_persistent_variable', persistent_variable)
+                
+            image_url = fetch_image(cleaned_words[persistent_variable-1])
+            if (len(image_url) == 0):
+                image_url.append("no image")
+            choices = []
+            for i in range(3):
+                choices.append(fetch_words())
+            choices.append(cleaned_words[persistent_variable-1])
+            random.shuffle(choices)
+            try:
+                random_number = random.randint(0, len(image_url)-1)
+            except:
+                random_number = 0
+            print("hey")
+            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
+                                                            'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
        
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'

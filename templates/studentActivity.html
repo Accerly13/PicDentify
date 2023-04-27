@@ -351,6 +351,10 @@
     </style>
   </head>
   <body>
+  <form id="startGame"> 
+    {% csrf_token %}
+    <input name="hidden_value" value="hidden_value" hidden>
+  </form>
 	<div class="quiz-container">
 	  <div id="level-container">
 		<label>Level:</label>
@@ -440,10 +444,22 @@ function onTimeLimitReached() {
                 if (jsResponse) {
                     resultText.textContent = "Correct!";
                     answerIsCorrect()
+                    var nextButton = document.createElement("button");
+                    nextButton.textContent = "Next";
+                    nextButton.onclick = function() { 
+                      nextQuestion()
+                    }
+                    resultText.appendChild(nextButton);
                 }
                 else {
-                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
-                    playSadEmojiSound()
+                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
+                  playSadEmojiSound()
+                  var nextButton = document.createElement("button");
+                  nextButton.textContent = "Next";
+                  nextButton.onclick = function() {
+                    nextQuestion()
+                  }
+                  resultText.appendChild(nextButton);
                 }
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
@@ -462,6 +478,7 @@ var container = document.getElementById('choices-container');
 var buttons = container.querySelectorAll('.choice-btn');
 for (var i = 0; i < buttons.length; i++) {
     buttons[i].addEventListener('click', function() {
+        event.preventDefault(); 
         clearTimeout(timeoutID);
         // Retrieve the value of the clicked button
         var value = this.value;
@@ -484,10 +501,22 @@ for (var i = 0; i < buttons.length; i++) {
                 if (jsResponse) {
                     answerIsCorrect()
                     resultText.textContent = "Correct!";
+                    var nextButton = document.createElement("button");
+                    nextButton.textContent = "Next";
+                    nextButton.onclick = function() {
+                      nextQuestion()
+                    }
+                    resultText.appendChild(nextButton);
                 }
                 else {
                   playSadEmojiSound()
-                    resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+                  var nextButton = document.createElement("button");
+                  nextButton.textContent = "Next";
+                  nextButton.onclick = function() {
+                    nextQuestion()
+                  }
+                  resultText.appendChild(nextButton);
                 }
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
@@ -495,6 +524,10 @@ for (var i = 0; i < buttons.length; i++) {
             });
     });
 }
+function nextQuestion() {
+  window.location.reload()
+}
+
 
 
 </script>
