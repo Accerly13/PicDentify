@@ -48,7 +48,6 @@ class TryView(TemplateView):
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
     def get(self, request):
-        print(request.session.get('username'))
         try:
             AdminKey.objects.get(pk=1)
         except:
@@ -408,7 +407,6 @@ class StudentActivity(TemplateView):
                                                          'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
     def post(self, request):
         if request.POST.get('choice'):
-            print(request.POST.get('topic'))
             persistent_variable = cache.get('my_persistent_variable')
             csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
             questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
