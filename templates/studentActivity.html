@@ -12,6 +12,26 @@
       integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JK"
       crossorigin="anonymous" />
     <style>
+
+button.btn.btn-primary {
+  background-color: #00A2ED;
+  color: white;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 4px 0px #0071A0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-top: 3rem;
+}
+
+button.btn.btn-primary:hover {
+  background-color: #0071A0;
+  box-shadow: 0px 6px 0px #004F6B;
+}
+
+
 .modal {
   position: fixed;
   z-index: 999;
@@ -29,7 +49,6 @@
 .modal-content {
     background-color: #59c9a5;
     background: linear-gradient(to bottom right, #59c9a5, #0076a8);
-    padding: 80px;
     border-radius: 20px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2), 0px 0px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -40,6 +59,8 @@
     animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff;
     font-family: 'Press Start 2P', cursive;
+    width: 40%; /* Adjust this value to your desired width /
+    max-width: 600px; / Add this to limit the maximum width */
 }
 
 .modal-content h2 {
@@ -442,31 +463,59 @@ function onTimeLimitReached() {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                    resultText.textContent = "Correct!";
-                    answerIsCorrect()
-                    var nextButton = document.createElement("button");
-                    nextButton.textContent = "Next";
-                    nextButton.onclick = function() { 
-                      nextQuestion()
-                    }
-                    resultText.appendChild(nextButton);
+                  resultText.textContent = "Correct!";
+                  answerIsCorrect();
+
+                  // Create a modal footer element
+                  var modalFooter = document.createElement("div");
+                  modalFooter.classList.add("modal-footer");
+
+                  // Create a "Next" button element
+                  var nextButton = document.createElement("button");
+                  nextButton.textContent = "Next";
+                  nextButton.classList.add("btn", "btn-primary");
+                  nextButton.onclick = function() {
+                    nextQuestion();
+                  }
+
+                  // Append the "Next" button to the modal footer
+                  modalFooter.appendChild(nextButton);
+
+                  // Append the modal footer to the modal content
+                  resultText.appendChild(modalFooter);
                 }
+
                 else {
                   resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
                   playSadEmojiSound()
+
+                  // Create a modal footer element
+                  var modalFooter = document.createElement("div");
+                  modalFooter.classList.add("modal-footer");
+
+                  // Create a "Next" button element
                   var nextButton = document.createElement("button");
                   nextButton.textContent = "Next";
+                  nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
                     nextQuestion()
                   }
-                  resultText.appendChild(nextButton);
+
+                  // Append the "Next" button to the modal footer
+                  modalFooter.appendChild(nextButton);
+
+                  // Append the modal footer to the modal content
+                  resultText.appendChild(modalFooter);
                 }
+
+
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
                 document.body.appendChild(modal);
                 
             });
-}
+} 
+
 
 var timeoutID = setTimeout(onTimeLimitReached, questions * 1000);
 
@@ -499,25 +548,51 @@ for (var i = 0; i < buttons.length; i++) {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                    answerIsCorrect()
-                    resultText.textContent = "Correct!";
-                    var nextButton = document.createElement("button");
-                    nextButton.textContent = "Next";
-                    nextButton.onclick = function() {
-                      nextQuestion()
-                    }
-                    resultText.appendChild(nextButton);
-                }
-                else {
-                  playSadEmojiSound()
-                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+                  answerIsCorrect()
+                  resultText.textContent = "Correct!";
+
+                  // Create a modal footer element
+                  var modalFooter = document.createElement("div");
+                  modalFooter.classList.add("modal-footer");
+
+                  // Create a "Next" button element
                   var nextButton = document.createElement("button");
                   nextButton.textContent = "Next";
+                  nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
                     nextQuestion()
                   }
-                  resultText.appendChild(nextButton);
+
+                  // Append the "Next" button to the modal footer
+                  modalFooter.appendChild(nextButton);
+
+                  // Append the modal footer to the modal content
+                  resultText.appendChild(modalFooter);
                 }
+
+                else {
+                  playSadEmojiSound()
+                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+
+                  // Create a modal footer element
+                  var modalFooter = document.createElement("div");
+                  modalFooter.classList.add("modal-footer");
+
+                  // Create a "Next" button element
+                  var nextButton = document.createElement("button");
+                  nextButton.textContent = "Next";
+                  nextButton.classList.add("btn", "btn-primary");
+                  nextButton.onclick = function() {
+                    nextQuestion()
+                  }
+
+                  // Append the "Next" button to the modal footer
+                  modalFooter.appendChild(nextButton);
+
+                  // Append the modal footer to the modal content
+                  resultText.appendChild(modalFooter);
+                }
+
                 modalContent.appendChild(resultText);
                 modal.appendChild(modalContent);
                 document.body.appendChild(modal);
