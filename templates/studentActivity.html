@@ -31,7 +31,6 @@ button.btn.btn-primary:hover {
   box-shadow: 0px 6px 0px #004F6B;
 }
 
-
 .modal {
   position: fixed;
   z-index: 999;
@@ -59,8 +58,7 @@ button.btn.btn-primary:hover {
     animation: bounce-in 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     text-shadow: 1px 1px 0px #fff, -1px -1px 0px #fff, 1px -1px 0px #fff, -1px 1px 0px #fff;
     font-family: 'Press Start 2P', cursive;
-    width: 40%; /* Adjust this value to your desired width /
-    max-width: 600px; / Add this to limit the maximum width */
+    width: 40%;
 }
 
 .modal-content h2 {
@@ -180,6 +178,13 @@ button.btn.btn-primary:hover {
 }
 
 #question-counter {
+  font-size: 24px;
+  font-weight: bold;
+  color: #4B0082;
+  margin: 0;
+}
+
+#score {
   font-size: 24px;
   font-weight: bold;
   color: #4B0082;
@@ -331,6 +336,9 @@ button.btn.btn-primary:hover {
 		font-size: 16px;
 		}
 
+    #score {
+		font-size: 16px;
+		}
 		#time-remaining {
 		font-size: 16px;
 		}
@@ -372,10 +380,48 @@ button.btn.btn-primary:hover {
     </style>
   </head>
   <body>
-  <form id="startGame"> 
+  <form id="hidden-value" method="post">
     {% csrf_token %}
-    <input name="hidden_value" value="hidden_value" hidden>
+
   </form>
+  {% if answered %}
+  <div class="quiz-container">
+	  <div id="level-container">
+		<label>Level:</label>
+		<span id="level">{{questions.difficulty_name}}</span>
+	  </div>
+	  <div id="question-info-container">
+		<p id="question-counter">Question {{start_index}} of {{length}}</p>
+		<div id="timer-container">
+		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
+		</div>
+	  </div>
+	  <div id="question-container">
+		{% if img_url != "no image" %}
+			<img id="image" src={{img_url}}>
+		{% else %}
+			<img id="image" src="{% static 'img/no_internet.png' %}">
+		{% endif %}
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <p>Congratulations!<br>Your score is:<br>{{ questions.score }}/{{ questions.maxpoints }}</p>
+        <div class="modal-footer">
+          <button class="btn btn-primary" onclick="navigateTo()">Get Back</button>
+        </div>
+      </div>
+    </div>
+	  </div>
+	  <div id="choices-container">
+		<form id="checkAnswer"> 
+			{% csrf_token %}
+			{% for choice in choices %}
+				<button class="choice-btn" value="{{choice}}">{{choice}}</button>
+			{% endfor %}
+		</form>
+		
+	  </div> 
+	</div>
+  {% else %}
 	<div class="quiz-container">
 	  <div id="level-container">
 		<label>Level:</label>
@@ -383,6 +429,7 @@ button.btn.btn-primary:hover {
 	  </div>
 	  <div id="question-info-container">
 		<p id="question-counter">Question {{start_index}} of {{length}}</p>
+    <span id="score">Points: {{questions.score}}/{{questions.maxpoints}}</span>
 		<div id="timer-container">
 		  <p id="time-remaining">Time remaining: {{questions.time_limit}} seconds</p>
 		  <div id="time-bar" style="animation:timer-animation {{questions.time_limit}}s linear forwards;"></div>
@@ -404,10 +451,9 @@ button.btn.btn-primary:hover {
 		</form>
 		
 	  </div>
-	  <div id="action-container">
-		<button id="next-btn" class="btn btn-primary hide">Next</button>
-	  </div>
+	  
 	</div>
+  {% endif %}
 
 <script>
 
@@ -446,6 +492,7 @@ function answerIsCorrect() {
     confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
   }, 250);
 }
+
 function onTimeLimitReached() {
   var myForm = document.querySelector("#checkAnswer");
         var formData = new FormData(myForm);
@@ -463,7 +510,7 @@ function onTimeLimitReached() {
                 modalContent.classList.add('modal-content');
                 var resultText = document.createElement('p');
                 if (jsResponse) {
-                  resultText.textContent = "Correct!";
+                  resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
                   answerIsCorrect();
 
                   // Create a modal footer element
@@ -475,7 +522,7 @@ function onTimeLimitReached() {
                   nextButton.textContent = "Next";
                   nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
-                    nextQuestion();
+                    nextQuestion("correct");
                   }
 
                   // Append the "Next" button to the modal footer
@@ -486,7 +533,7 @@ function onTimeLimitReached() {
                 }
 
                 else {
-                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
+                  resultText.textContent = "The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
                   playSadEmojiSound()
 
                   // Create a modal footer element
@@ -498,7 +545,7 @@ function onTimeLimitReached() {
                   nextButton.textContent = "Next";
                   nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
-                    nextQuestion()
+                    nextQuestion("wrong")
                   }
 
                   // Append the "Next" button to the modal footer
@@ -549,7 +596,7 @@ for (var i = 0; i < buttons.length; i++) {
                 var resultText = document.createElement('p');
                 if (jsResponse) {
                   answerIsCorrect()
-                  resultText.textContent = "Correct!";
+                  resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
 
                   // Create a modal footer element
                   var modalFooter = document.createElement("div");
@@ -560,7 +607,7 @@ for (var i = 0; i < buttons.length; i++) {
                   nextButton.textContent = "Next";
                   nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
-                    nextQuestion()
+                    nextQuestion("correct")
                   }
 
                   // Append the "Next" button to the modal footer
@@ -572,7 +619,7 @@ for (var i = 0; i < buttons.length; i++) {
 
                 else {
                   playSadEmojiSound()
-                  resultText.textContent = "Wrong! The correct answer is: "+data.correct_answer;
+                  resultText.textContent = "The correct answer is: "+data.correct_answer;
 
                   // Create a modal footer element
                   var modalFooter = document.createElement("div");
@@ -583,7 +630,7 @@ for (var i = 0; i < buttons.length; i++) {
                   nextButton.textContent = "Next";
                   nextButton.classList.add("btn", "btn-primary");
                   nextButton.onclick = function() {
-                    nextQuestion()
+                    nextQuestion("wrong")
                   }
 
                   // Append the "Next" button to the modal footer
@@ -599,8 +646,35 @@ for (var i = 0; i < buttons.length; i++) {
             });
     });
 }
-function nextQuestion() {
-  window.location.reload()
+try {
+  var isAnswered = "{{answered}}"
+
+  if (isAnswered == "done") {
+    clearTimeout(timeoutID);
+    answerIsCorrect()
+    var modal = document.getElementById("myModal");
+		modal.style.display = "block";
+  }
+} catch(e) {
+  console.log(e)
+}
+
+function navigateTo() {
+  window.location.href = window.location.origin + "/studentdashboard";
+
+}
+function nextQuestion(isCorrect) {
+  var myForm = document.querySelector("#checkAnswer");
+  var formData = new FormData(myForm);
+  formData.append("isCorrect", isCorrect),
+  fetch('/studentdashboard/studentactivity/', {
+    method: 'POST',
+    body: formData
+  }).then(() => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  });
 }
 
 

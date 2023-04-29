@@ -62,7 +62,7 @@
 			{% csrf_token %}
 			<div style="color: whitesmoke; text-align: center;" class="form-group">
 			  <label for="admin_key">ADMIN KEY</label>
-			  <input type="text" id="admin_key" name="admin_key" required>
+			  <input type="password" id="admin_key" name="admin_key" required>
 			</div>
 			<div class="form-group" style="text-align: center;">
 			  <input type="submit" onclick="SubmitAdminKey()" value="LOGIN">
@@ -75,7 +75,7 @@
 			<div class="modal-content1">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLongTitle"> </h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="noButton()">
 					  <span aria-hidden="true">&times;</span>
 					</button>
 				  </div>
@@ -97,21 +97,22 @@
 				  </div>
 				</div>
 				<div id="new-user-section" style="display: none;">
+				  <label style="color: #080101;" for="new_user">Type Your Name:</label>
 				  <input type="text" id="new_user" name="new_user" required class="form-control mb-3">
-				  <label style="color: #080101;" for="new_user">Password:</label>
-				  <input type="text" id="password" name="password" required class="form-control mb-3">
-				  <label style="color: #080101;" for="new_user">Type Your Password Again:</label>
-				  <input style="margin-bottom: 1rem;" type="text" id="password1" name="password1" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password">Password:</label>
+				  <input type="password" id="password" name="password" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password1">Type Your Password Again:</label>
+				  <input style="margin-bottom: 1rem;" type="password" id="password1" name="password1" required class="form-control mb-3">
 				  <button class="btn btn-primary" id="close-modal" onclick="SubmitAdminName(2)">Register</button>
 				</div>
 				{% else %}
 				<div>
 				  <label style="color: #080101;" for="new_user">Type Your Name:</label>
 				  <input type="text" id="new_user" name="new_user" required class="form-control mb-3">
-				  <label style="color: #080101;" for="new_user">Password:</label>
-				  <input type="text" id="password" name="password" required class="form-control mb-3">
-				  <label style="color: #080101;" for="new_user">Type Your Password Again:</label>
-				  <input style="margin-bottom: 1rem;" type="text" id="password1" name="password1" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password">Password:</label>
+				  <input type="password" id="password" name="password" required class="form-control mb-3">
+				  <label style="color: #080101;" for="password1">Type Your Password Again:</label>
+				  <input style="margin-bottom: 1rem;" type="password" id="password1" name="password1" required class="form-control mb-3">
 				  {% if messages %}
 				  <p class="messages">
 					{% for message in messages %}
@@ -426,11 +427,21 @@ input[type="submit"]:hover {
 				window.location.href = window.location.origin + "/dashboard";
 			} else if (num == 2) {
 				swal({
-				title: "Successfully Registered!",
-				icon: "success",
-				buttons: false,
-				timer: 2000 // 2 seconds
-			});
+					title: "Successfully Registered!",
+					text: "Reload the page to Login",
+					icon: "success",
+					buttons: {
+						login: {
+							text: "Ok",
+							value: "login",
+							className: "btn btn-primary",
+						}
+					}
+				}).then((value) => {
+					if (value === "login") {
+						location.reload()	
+					}
+				});
 			}
 		});
 		}

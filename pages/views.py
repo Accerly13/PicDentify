@@ -112,22 +112,22 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10)
+                                            points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20)
+                                            points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30)
+                                            points_per_question=30, maxpoints=300, answered=0)
                             difficulty_save.save()
 
                 elif topic_name == "Antonyms":
@@ -136,22 +136,22 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                                points_per_question=10)
+                                                points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                                points_per_question=20)
+                                                points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                                 words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                                points_per_question=30)
+                                                points_per_question=30, maxpoints=300, answered=0)
                             difficulty_save.save()
                 elif topic_name == "Homonyms":
                     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -159,22 +159,22 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10)
+                                            points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20)
+                                            points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30)
+                                            points_per_question=30, maxpoints=300, answered=0)
                             difficulty_save.save()
                 elif topic_name == "Hyponyms":
                     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -182,22 +182,22 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10)
+                                            points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20)
+                                            points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30)
+                                            points_per_question=30, maxpoints=300, answered=0)
                             difficulty_save.save()
                 elif topic_name == "Homographs":
                     topic = Topics.objects.create(topic_id=topics.count()+1, topic_name=topic_name, owner_id=user.admin_id)
@@ -205,22 +205,22 @@ class Dashboard(LoginRequiredMixin, TemplateView):
                     for i in range(1, 4):
                         difficulty = Difficulty.objects.all()
                         if i == 1:
-                            word_list = "simple, smooth, quick, ready, soft, clear, cold, hot, small, big"
+                            word_list = "beautiful, huge, perfect, rough, sharp, cruel, many, baby, light, cute"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='easy',
                                             words=word_list, topic_id=topic.topic_id, time_limit=10,
-                                            points_per_question=10)
+                                            points_per_question=10, maxpoints=100, answered=0)
                             difficulty_save.save()
                         elif i == 2:
-                            word_list = "ladder, lady, lamp, land, large, last, late, lately, laugh, lazy"
+                            word_list = "ladder, lady, army, employ, garden, clock, late, bought, lunch, wrist"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='medium',
                                             words=word_list, topic_id=topic.topic_id, time_limit=12,
-                                            points_per_question=20)
+                                            points_per_question=20, maxpoints=200, answered=0)
                             difficulty_save.save()
                         elif i == 3:
-                            word_list = "excavate, gallows, mason, sanguine, accord, bereft, blanch, caesura, briar, elegiac"
+                            word_list = "health, disappear, newspaper, cardboard, trouble, behind, caught, picnic, shiny, hallway"
                             difficulty_save = Difficulty.objects.create(difficulty_id=difficulty.count()+1, difficulty_name='difficult',
                                             words=word_list, topic_id=topic.topic_id, time_limit=15,
-                                            points_per_question=30)
+                                            points_per_question=30, maxpoints=300, answered=0)
                             difficulty_save.save()
             
         create_topics = ["Synonyms", "Antonyms", "Homonyms", "Hyponyms", "Homographs"]
@@ -284,7 +284,7 @@ class StudentDashboard(TemplateView):
         try:
             user = AdminUser.objects.get(username=request.session['username'])
             topics = Topics.objects.filter(owner_id=user.admin_id)
-            return render(request, 'studentDashboard.html', {'topics':topics})
+            return render(request, 'studentDashboard.html', {'topics':topics, 'user':user})
         except:
 
             return redirect('/studentlogin/')
@@ -383,12 +383,26 @@ class StudentActivity(TemplateView):
         persistent_variable = cache.get('my_persistent_variable')
 
         # If the persistent variable doesn't exist yet, initialize it
-        if persistent_variable is None or persistent_variable == len(words):
+        if persistent_variable is None:
             persistent_variable = 0
             cache.set('my_persistent_variable', persistent_variable)
-
+        if len(words) == questions.answered:
+            image_url = fetch_image(cleaned_words[questions.answered-1])
+            if (len(image_url) == 0):
+                image_url.append("no image")
+            choices = []
+            for i in range(3):
+                choices.append(fetch_words())
+            choices.append(cleaned_words[questions.answered-1])
+            random.shuffle(choices)
+            try:
+                random_number = random.randint(0, len(image_url)-1)
+            except:
+                random_number = 0
+            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
+                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'answered':'done'})
         # Increment the persistent variable
-        persistent_variable += 1
+        persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
             
         image_url = fetch_image(cleaned_words[persistent_variable-1])
@@ -418,103 +432,20 @@ class StudentActivity(TemplateView):
             if request.POST.get('choice') not in cleaned_words:
                 return JsonResponse({'answerVerify': False, 'correct_answer':cleaned_words[persistent_variable-1]})
             else:
-                return JsonResponse({'answerVerify': True})
-        elif request.POST.get('hidden_value'):
-            def fetch_words():
-                response = requests.get('https://random-word-api.herokuapp.com/word')
-                if response.status_code == 200:
-                    word = response.json()[0]
-                    return word
-                else:
-                    print('Error fetching word')
+                return JsonResponse({'answerVerify': True, 'points_per_question':questions.points_per_question})
+        else:
+            if request.POST.get('isCorrect') == "correct":
+                csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                questions.score = questions.score + questions.points_per_question
+                questions.answered = questions.answered + 1
+                questions.save()
+            else:
+                csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
+                questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+                questions.answered = questions.answered + 1
+                questions.save()
 
-            def fetch_image(query):
-                url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
-                # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
-                response = requests.get(url)
-                image_urls = []
-                if response.status_code == 200:
-                    data = response.json()
-                    for image_data in data:
-                        image_url = image_data['urls']['regular']
-                        image_urls.append(image_url)
-                    return image_urls
-                else:
-                    url = "https://api.pexels.com/v1/search"
-                    querystring = {"query":query,"per_page":"10"}
-
-                    headers = {
-                        "Authorization": "RUOSX3w8hIi5FbqexEHY6duj0VCLcQHcnB7ttNQIaVGg3P5G1MGPjtZb"
-                    }
-                    response = requests.request("GET", url, headers=headers, params=querystring)
-                    if response.status_code == 200:
-                        # Convert response to JSON format
-                        response_data = json.loads(response.text)
-                        
-                        # Extract image URLs from JSON response
-                        for photo in response_data['photos']:
-                            image_urls.append(photo['src']['large'])
-                            
-                        return image_urls
-                    else: 
-                        url = "https://pixabay.com/api/"
-                        params = {
-                            "key": "35398144-35ce401c80dac5a3a0846c3bd",
-                            "q": query,
-                            "per_page": 10
-                        }
-
-                        # Send GET request to API endpoint
-                        response = requests.get(url, params=params)
-
-                        # Check if API request was successful
-                        if response.status_code == 200:
-                            # Parse JSON response
-                            response_data = response.json()
-                            
-                            # Extract image URLs from response
-                            image_urls = [result["largeImageURL"] for result in response_data["hits"]]
-                            
-                            # Print image URLs
-                            return image_urls
-                        else:
-                            # Print error message if API request failed
-                            image_urls.append("no image")
-                            return image_urls
-            
-            csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
-            questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
-            words = questions.words.split(',')
-
-            cleaned_words = [word.strip() for word in words]
-
-            persistent_variable = cache.get('my_persistent_variable')
-
-            # If the persistent variable doesn't exist yet, initialize it
-            if persistent_variable is None or persistent_variable == len(words):
-                persistent_variable = 0
-                cache.set('my_persistent_variable', persistent_variable)
-
-            # Increment the persistent variable
-            persistent_variable += 1
-            cache.set('my_persistent_variable', persistent_variable)
-                
-            image_url = fetch_image(cleaned_words[persistent_variable-1])
-            if (len(image_url) == 0):
-                image_url.append("no image")
-            choices = []
-            for i in range(3):
-                choices.append(fetch_words())
-            choices.append(cleaned_words[persistent_variable-1])
-            random.shuffle(choices)
-            try:
-                random_number = random.randint(0, len(image_url)-1)
-            except:
-                random_number = 0
-            print("hey")
-            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
-                                                            'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
-       
 class StudentLogin(TemplateView):
     template_name = 'studentLogin.html'
 

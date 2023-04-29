@@ -58,6 +58,9 @@ class Difficulty(models.Model):
     topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
     time_limit = models.IntegerField(blank=False, null=False)
     points_per_question = models.IntegerField(blank=False, null=False)
+    maxpoints = models.IntegerField(blank=False, null=False)
+    answered = models.IntegerField(blank=False, null=False)
+    score = models.IntegerField(blank=False, null=False, default=0)
     class Meta:
         db_table = "difficulty"
 
