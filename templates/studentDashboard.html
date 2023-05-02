@@ -27,7 +27,7 @@
 	<!-- Navigation bar -->
     
   <nav class="navbar navbar-expand-lg navbar-light">
-    <a class="navbar-brand" href="#">{{user.username|title}}'s Class</a>
+    <a style="color: wheat;" class="navbar-brand" href="#">{{user.username|title}}'s Class</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -41,7 +41,7 @@
       </ul>
     </div>
   </nav>
-  
+
   <div class="container">
       <div class="modal fade" id="error-modal" tabindex="-1" role="dialog" aria-labelledby="error-modal-label" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -113,7 +113,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div style="color:black;" class="modal-body">
             Are you sure you want to proceed with this difficulty level?
           </div>
           <div class="modal-footer">
@@ -150,6 +150,18 @@
 html, body {
   height: 100%;
 }
+
+body {
+  background-image: url("{% static 'img/DashboardBG.png' %}");
+  background-size: cover; /* Set to cover to make the image full screen */
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
 
 .container {
   display: flex;
