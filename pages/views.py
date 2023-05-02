@@ -10,8 +10,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.core.cache import cache
 import random, string, requests, json
 from django.forms.models import model_to_dict
-from google_images_search import GoogleImagesSearch
-
+from bs4 import BeautifulSoup
 @login_required
 def protected_view(request):
     # Your protected view logic here
@@ -25,26 +24,33 @@ class TryView(TemplateView):
     template_name = 'try.html'
     def post(self, request):
         if request.POST.get('search_term'):
+            
             # Get the search term from the POST request
             search_term = request.POST.get('search_term', '')
             
-            search_params = {
-                'q': search_term,
-                'num': 3,
-            }
-           
-            # Initialize the GoogleImagesSearch object
-            gis = GoogleImagesSearch('AIzaSyBGL45ZwjasJjRVWH_JmAtYflGArjmNfqE', '5793900b712be4274')         
-            # Set the search parameters
-            gis.search(search_params)
-            # Get the first 10 images from the search results
-            results = gis.results()[:10]
-            
-            # Render the template with the search results
-            return render(request, 'home.html', {'results': results})
+            url = f"https://www.merriam-webster.com/thesaurus/{search_term}"
+            response = requests.get(url)
+            html_content = response.content
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(html_content, 'html.parser')
+
+            # Find the element that contains the synonyms
+            share_link = soup.find('a', class_='fb share-link')
+
+            # Extract the synonyms from the data-share-description attribute
+            if share_link:
+                synonyms_str, antonyms_str = share_link.get('data-share-description', ''), ''
+                if 'Antonyms of' in synonyms_str:
+                    synonyms_str, antonyms_str = synonyms_str.split(';')
+                synonyms_list = [s.strip() for s in synonyms_str.split(':')[1].split(',')]
+                antonyms_list = [s.strip() for s in antonyms_str.split(':')[1].split(',')] if antonyms_str else []
+                print('Synonyms:', synonyms_list)
+                print('Antonyms:', antonyms_list)
+            return render(request, 'try.html', {'results': synonyms_list, 'antonyms':antonyms_list})
         
         # Render the search form if the request method is not POST
-        return render(request, 'home.html')
+       
 class LoginPage(TemplateView):
     template_name = 'loginPage.html'
     def get(self, request):
@@ -312,6 +318,30 @@ class StudentDashboard(TemplateView):
 class StudentActivity(TemplateView):
 
     def get(self, request):
+        def synonyms_antonyms_list(word, category):
+            # Get the HTML content of a web page
+            print(word)
+            url = f"https://www.merriam-webster.com/thesaurus/{word}"
+            response = requests.get(url)
+            html_content = response.content
+
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(html_content, 'html.parser')
+
+            # Find the element that contains the synonyms and antonyms
+            share_link = soup.find('a', class_='fb share-link')
+
+            # Extract the synonyms and antonyms from the data-share-description attribute
+            if share_link:
+                synonyms_str, antonyms_str = share_link.get('data-share-description', ''), ''
+                if 'Antonyms of' in synonyms_str:
+                    synonyms_str, antonyms_str = synonyms_str.split(';')
+                synonyms_list = [s.strip() for s in synonyms_str.split(':')[1].split(',')]
+                antonyms_list = [s.strip() for s in antonyms_str.split(':')[1].split(',')] if antonyms_str else []
+                if category == 1:
+                    return synonyms_list
+                else:
+                    return antonyms_list
         def fetch_words():
             response = requests.get('https://random-word-api.herokuapp.com/word')
             if response.status_code == 200:
@@ -321,7 +351,7 @@ class StudentActivity(TemplateView):
                 print('Error fetching word')
 
         def fetch_image(query):
-            url = f'https://api.unsplash.com/photos/random/?count=10&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
+            url = f'https://api.unsplash.com/photos/random/?count=5&query={query}&client_id=tl59FZ7ave-tfL1BOjZMfKxACAF1QFglZyc2O-SMbg8'
             # replace YOUR_ACCESS_KEY with your actual Unsplash API access key
             response = requests.get(url)
             image_urls = []
@@ -332,80 +362,47 @@ class StudentActivity(TemplateView):
                     image_urls.append(image_url)
                 return image_urls
             else:
-                url = "https://api.pexels.com/v1/search"
-                querystring = {"query":query,"per_page":"10"}
-
-                headers = {
-                    "Authorization": "RUOSX3w8hIi5FbqexEHY6duj0VCLcQHcnB7ttNQIaVGg3P5G1MGPjtZb"
-                }
-                response = requests.request("GET", url, headers=headers, params=querystring)
-                if response.status_code == 200:
-                    # Convert response to JSON format
-                    response_data = json.loads(response.text)
-                    
-                    # Extract image URLs from JSON response
-                    for photo in response_data['photos']:
-                        image_urls.append(photo['src']['large'])
-                        
-                    return image_urls
-                else: 
-                    url = "https://pixabay.com/api/"
-                    params = {
-                        "key": "35398144-35ce401c80dac5a3a0846c3bd",
-                        "q": query,
-                        "per_page": 10
-                    }
-
-                    # Send GET request to API endpoint
-                    response = requests.get(url, params=params)
-
-                    # Check if API request was successful
-                    if response.status_code == 200:
-                        # Parse JSON response
-                        response_data = response.json()
-                        
-                        # Extract image URLs from response
-                        image_urls = [result["largeImageURL"] for result in response_data["hits"]]
-                        
-                        # Print image URLs
-                        return image_urls
-                    else:
-                        # Print error message if API request failed
-                        image_urls.append("no image")
-                        return image_urls
+                image_urls.append("no image")
+                return image_urls
         
         csrf_token = request.META.get('HTTP_COOKIE', '').split(';')
         questions = Difficulty.objects.get(difficulty_id=csrf_token[0])
+        topic_name = Topics.objects.get(topic_id=questions.topic_id)
         words = questions.words.split(',')
 
         cleaned_words = [word.strip() for word in words]
 
         persistent_variable = cache.get('my_persistent_variable')
-
+        
         # If the persistent variable doesn't exist yet, initialize it
         if persistent_variable is None:
             persistent_variable = 0
             cache.set('my_persistent_variable', persistent_variable)
         if len(words) == questions.answered:
-            image_url = fetch_image(cleaned_words[questions.answered-1])
+            if topic_name.topic_name == "Synonyms":
+                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
+                fetch_word = random.randint(0, len(word_list)-1)
+                image_url = fetch_image(word_list[fetch_word])
             if (len(image_url) == 0):
                 image_url.append("no image")
             choices = []
             for i in range(3):
                 choices.append(fetch_words())
-            choices.append(cleaned_words[questions.answered-1])
+            choices.append(cleaned_words[questions.answered])
             random.shuffle(choices)
             try:
                 random_number = random.randint(0, len(image_url)-1)
             except:
                 random_number = 0
-            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
+            
+            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered], 'start_index':questions.answered,
                                                          'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
-            
-        image_url = fetch_image(cleaned_words[persistent_variable-1])
+        word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
+        fetch_word = random.randint(0, len(word_list)-1)
+        image_url = fetch_image(word_list[fetch_word])
         if (len(image_url) == 0):
             image_url.append("no image")
         choices = []
@@ -418,7 +415,7 @@ class StudentActivity(TemplateView):
         except:
             random_number = 0
         return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[persistent_variable-1], 'start_index':persistent_variable,
-                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices})
+                                                         'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'word_list':word_list})
     def post(self, request):
         if request.POST.get('choice'):
             persistent_variable = cache.get('my_persistent_variable')
