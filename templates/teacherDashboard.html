@@ -28,7 +28,6 @@ body {
   background-color: #fffacd; /* LemonChiffon */
   border: 2px solid #ff8c00; /* DarkOrange */
   transition: box-shadow 0.3s ease-in-out;
-  padding: 20px;
   margin-bottom: 20px;
   border-radius: 10px;
   position: relative;
@@ -257,8 +256,28 @@ body {
   border-bottom-color: #fff;
 }
 
+.hover-effect {
+  transition: all 0.3s ease;
+}
 
-    </style>
+.hover-effect:hover {
+  color: #007bff;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.hover-effect2 {
+  transition: transform 0.3s ease;
+}
+
+.hover-effect2:hover {
+  color: #dc3545;
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+
+</style>
 </head>
 <body>
     <!-- Navbar -->
@@ -311,35 +330,36 @@ body {
                   Create Topic
               </button>              
           </div>
-        </div>
+      </div>
     
-        <div class="row mt-4">
-          {% for item in topics %}
-          <div class="col-md-4 mb-2">
-            <div class="card h-100">
-              <div class="card-body d-flex flex-column justify-content-between">
-                <div>
-                  <h5 style="text-align: center;" class="card-title">{{item.topic_name}}</h5>
-                  {% for items in difficulty %}
-                  {% if items.topic_id == item.topic_id %}
-                  <p class="card-text">{{items.difficulty_name|title}}</p>
-                  {% endif %}
-                  {% endfor %}
-                </div>
-                <div class="mt-auto">
-                  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal1" id="edit-topic{{forloop.counter}}">Edit Details</a>
-                  <form id="topic_to_edit{{forloop.counter}}" method="post">
-                    {% csrf_token %}
-                    <input type="text" value="{{item.topic_id}}" name="topic_to_edit_samp" hidden>
-                  </form>
-                </div>
+      <div class="row mt-4">
+        {% for item in topics %}
+        <div class="col-md-3 mb-2">
+          <div class="card h-100">
+            <div class="card-body d-flex flex-column justify-content-between">
+              <div>
+                <h5 style="text-align: center;" class="card-title hover-effect">{{item.topic_name}}</h5>
+                {% for items in difficulty %}
+                {% if items.topic_id == item.topic_id %}
+                <p class="card-text difficulty-level hover-effect2">{{items.difficulty_name|title}}</p>
+                {% endif %}
+                {% endfor %}
+              </div>                           
+              <div class="mt-auto">
+                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editModal1" id="edit-topic{{forloop.counter}}">Edit Details</a>
+                <form id="topic_to_edit{{forloop.counter}}" method="post">
+                  {% csrf_token %}
+                  <input type="text" value="{{item.topic_id}}" name="topic_to_edit_samp" hidden>
+                </form>
               </div>
             </div>
           </div>
-          {% endfor %}
         </div>
-        
+        {% endfor %}
       </div>
+    
+    </div>
+    
   
   <!-- Create Topic Modal -->
   <div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
