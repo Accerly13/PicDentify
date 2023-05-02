@@ -30,10 +30,31 @@ body {
   transition: box-shadow 0.3s ease-in-out;
   padding: 20px;
   margin-bottom: 20px;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: -1;
+  transform: scale(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.card:hover::before {
+  transform: scale(1);
 }
 
 .card:hover {
   box-shadow: 5px 5px 15px #ff8c00; /* DarkOrange */
+  transform: translateY(-5px);
 }
 
 .card-header {
@@ -42,14 +63,9 @@ body {
   font-size: 20px;
   font-weight: bold;
   padding: 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   transition: background-color 0.3s ease-in-out;
-}
-
-.card:hover {
-  box-shadow: 10px 10px 30px #ff8c00; /* DarkOrange */
-  transform: translateY(-10px);
 }
 
 .card-title {
@@ -60,36 +76,41 @@ body {
 
 .card-body {
   margin-top: 10px;
+  color: black;
+  font-size: 18px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.card-body:hover {
+  transform: scale(1.05);
 }
 
 .card-text {
-  font-size: 18px;
   font-weight: bold;
   color: #b22222; /* FireBrick */
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-    
-    .btn-primary {
-      background-color: #ff8c00; /* DarkOrange */
-      border: none;
-    }
-    
-    .btn-primary:hover {
-      background-color: #ff4500; /* OrangeRed */
-      border: none;
-    }
-    
-    .btn-primary:focus {
-      box-shadow: none;
-    }
-    
-    .btn-primary:active {
-      background-color: #8b0000; /* DarkRed */
-      border: none;
-    }
-    
+.btn-primary {
+  background-color: #ff8c00; /* DarkOrange */
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #ff4500; /* OrangeRed */
+  border: none;
+}
+
+.btn-primary:focus {
+  box-shadow: none;
+}
+
+.btn-primary:active {
+  background-color: #8b0000; /* DarkRed */
+  border: none;
+}
+
     .modal-header {
       background-color: #ff8c00; /* DarkOrange */
       color: white;
