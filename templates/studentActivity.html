@@ -631,7 +631,12 @@ function onTimeLimitReached() {
                 }
 
                 else {
-                  resultText.textContent = "The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
+                  resultText.innerHTML = "The correct answer is: "+data.correct_answer.charAt(0).toUpperCase() + data.correct_answer.slice(1);
+                  var list_words = "{{word_list}}"
+                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  var wordsString = myArray.join(', ');
+                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
                   playSadEmojiSound()
 
                   // Create a modal footer element
