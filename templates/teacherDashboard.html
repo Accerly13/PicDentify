@@ -33,6 +33,7 @@ body {
   border-radius: 10px;
   position: relative;
   overflow: hidden;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .card::before {
@@ -42,7 +43,7 @@ body {
   left: -10px;
   right: -10px;
   bottom: -10px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 140, 0, 0.2); /* LightOrange with opacity */
   z-index: -1;
   transform: scale(0);
   transition: transform 0.3s ease-in-out;
@@ -53,7 +54,7 @@ body {
 }
 
 .card:hover {
-  box-shadow: 5px 5px 15px #ff8c00; /* DarkOrange */
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2); /* Increased shadow */
   transform: translateY(-5px);
 }
 
@@ -94,7 +95,9 @@ body {
 
 .btn-primary {
   background-color: #ff8c00; /* DarkOrange */
+  color: #fffacd; /* LemonChiffon */
   border: none;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .btn-primary:hover {
@@ -110,6 +113,14 @@ body {
   background-color: #8b0000; /* DarkRed */
   border: none;
 }
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  color: #fffacd; /* LemonChiffon */
+}
+
+
 
     .modal-header {
       background-color: #ff8c00; /* DarkOrange */
