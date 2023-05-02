@@ -74,7 +74,7 @@
 			<!-- Modal content -->
 			<div class="modal-content1">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLongTitle"> </h5>
+					<h5 class="modal-title" id="exampleModalLongTitle">User Login</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="noButton()">
 					  <span aria-hidden="true">&times;</span>
 					</button>
@@ -83,7 +83,7 @@
 			  <form id="new_admin_name">
 				{% csrf_token %}
 				{% if admins %}
-				<select class="form-select mb-3" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)">
+				<select class="form-select mb-3 mt-2" aria-label="Default select example" name="existing_user" onchange="handleSelectChange(this)">
 				  {% for item in admins %}
 				  <option value="{{item.username}}">{{ item.username }}</option>
 				  {% endfor %}
