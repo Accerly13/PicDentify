@@ -609,6 +609,11 @@ function onTimeLimitReached() {
                 var resultText = document.createElement('p');
                 if (jsResponse) {
                   resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
+                  var list_words = "{{word_list}}"
+                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  var wordsString = myArray.join(', ');
+                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
                   answerIsCorrect();
 
                   // Create a modal footer element
@@ -700,6 +705,11 @@ for (var i = 0; i < buttons.length; i++) {
                 if (jsResponse) {
                   answerIsCorrect()
                   resultText.innerHTML = "Correct!<br>+"+data.points_per_question;
+                  var list_words = "{{word_list}}"
+                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  var wordsString = myArray.join(', ');
+                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
 
                   // Create a modal footer element
                   var modalFooter = document.createElement("div");
@@ -722,7 +732,12 @@ for (var i = 0; i < buttons.length; i++) {
 
                 else {
                   playSadEmojiSound()
-                  resultText.textContent = "The correct answer is: "+data.correct_answer;
+                  resultText.innerHTML = "The correct answer is: "+data.correct_answer;
+                  var list_words = "{{word_list}}"
+                  var parsed_words_final = list_words.replace(/&#x27;/g, "'")
+                  var myArray = JSON.parse(parsed_words_final.replace(/'/g, "\""));
+                  var wordsString = myArray.join(', ');
+                  resultText.innerHTML += "<br>The "+"{{questions.topic.topic_name}}"+" are: " + wordsString
 
                  
 

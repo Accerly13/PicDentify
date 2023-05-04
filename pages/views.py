@@ -11,6 +11,13 @@ from django.core.cache import cache
 import random, string, requests, json
 from django.forms.models import model_to_dict
 from bs4 import BeautifulSoup
+import nltk
+from nltk.corpus import wordnet
+
+# initialize WordNet
+nltk.download('wordnet')
+
+
 @login_required
 def protected_view(request):
     # Your protected view logic here
@@ -320,7 +327,6 @@ class StudentActivity(TemplateView):
     def get(self, request):
         def synonyms_antonyms_list(word, category):
             # Get the HTML content of a web page
-            print(word)
             url = f"https://www.merriam-webster.com/thesaurus/{word}"
             response = requests.get(url)
             html_content = response.content
@@ -340,8 +346,32 @@ class StudentActivity(TemplateView):
                 antonyms_list = [s.strip() for s in antonyms_str.split(':')[1].split(',')] if antonyms_str else []
                 if category == 1:
                     return synonyms_list
-                else:
+                elif category == 2:
                     return antonyms_list
+                elif category == 3:
+                    return word
+                elif category == 4:
+                    synsets = wordnet.synsets(word)
+                    hyponyms = []
+                    for synset in synsets:
+                        for hyponym in synset.hyponyms():
+                            hyponyms.append(hyponym.name().split('.')[0])
+                    return hyponyms[:7]
+                else:
+                    synsets = wordnet.synsets(word)
+    
+                    # Keep only synsets that have more than one lemma
+                    synsets = [s for s in synsets if len(s.lemmas()) > 1]
+                    
+                    # Get all lemmas for each synset and extract homographs
+                    homographs = set()
+                    for s in synsets:
+                        for l in s.lemmas():
+                            if l.name() != word:
+                                homographs.add(l.name())
+                    
+                    # Return list of homographs
+                    return list(homographs)
         def fetch_words():
             response = requests.get('https://random-word-api.herokuapp.com/word')
             if response.status_code == 200:
@@ -381,26 +411,43 @@ class StudentActivity(TemplateView):
         if len(words) == questions.answered:
             if topic_name.topic_name == "Synonyms":
                 word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
-                fetch_word = random.randint(0, len(word_list)-1)
-                image_url = fetch_image(word_list[fetch_word])
+            elif topic_name.topic_name == "Antonyms":
+                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 2)
+            elif topic_name.topic_name == "Homonyms":
+                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 3)
+            elif topic_name.topic_name == "Hyponyms":
+                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
+            elif topic_name.topic_name == "Homographs":
+                word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
+            fetch_word = random.randint(0, len(word_list)-1)
+            image_url = fetch_image(word_list[fetch_word])
             if (len(image_url) == 0):
                 image_url.append("no image")
             choices = []
             for i in range(3):
                 choices.append(fetch_words())
-            choices.append(cleaned_words[questions.answered])
+            choices.append(cleaned_words[questions.answered-1])
             random.shuffle(choices)
             try:
                 random_number = random.randint(0, len(image_url)-1)
             except:
                 random_number = 0
             
-            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered], 'start_index':questions.answered,
+            return render(request, 'studentActivity.html', {'questions':questions, 'words': cleaned_words[questions.answered-1], 'start_index':questions.answered,
                                                          'img_url':image_url[random_number], 'length':len(words), 'choices':choices, 'answered':'done'})
         # Increment the persistent variable
         persistent_variable = questions.answered + 1
         cache.set('my_persistent_variable', persistent_variable)
-        word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
+        if topic_name.topic_name == "Synonyms":
+            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 1)
+        elif topic_name.topic_name == "Antonyms":
+            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 2)
+        elif topic_name.topic_name == "Homonyms":
+            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 3)
+        elif topic_name.topic_name == "Hyponyms":
+            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 4)
+        elif topic_name.topic_name == "Homographs":
+            word_list = synonyms_antonyms_list(cleaned_words[persistent_variable-1], 5)
         fetch_word = random.randint(0, len(word_list)-1)
         image_url = fetch_image(word_list[fetch_word])
         if (len(image_url) == 0):
